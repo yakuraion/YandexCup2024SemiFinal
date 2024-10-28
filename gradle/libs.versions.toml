@@ -2,20 +2,18 @@
 agp = "8.7.1"
 kotlin = "2.0.0"
 coreKtx = "1.13.1"
-junit = "4.13.2"
-androidXJunit = "1.2.1"
-lifecycleRuntimeKtx = "2.8.6"
+lifecycle = "2.8.6"
 activityCompose = "1.9.3"
 composeBom = "2024.10.00"
+koinBom = "4.0.0"
+timber = "5.0.1"
+navigation = "2.8.3"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 
-junit = { module = "junit:junit", version.ref = "junit" }
-
-androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidXJunit" }
-
-androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 
@@ -25,8 +23,18 @@ compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
+
+navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koinBom" }
+koin-core = { module = "io.insert-koin:koin-core" }
+koin-core-coroutines = { module = "io.insert-koin:koin-core-coroutines" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose" }
+
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

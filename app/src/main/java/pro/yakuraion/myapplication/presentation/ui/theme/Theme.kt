@@ -1,4 +1,4 @@
-package pro.yakuraion.myapplication.ui.theme
+package pro.yakuraion.myapplication.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
