@@ -20,7 +20,7 @@ data class Frame(val actions: List<FrameAction> = emptyList()) {
         return Frame(actions = actions + action)
     }
 
-    fun stepBack(): Frame {
-        return Frame(actions = actions.dropLast(1))
+    fun goToAction(number: Int): Frame {
+        return Frame(actions = actions.take(number))
     }
 }

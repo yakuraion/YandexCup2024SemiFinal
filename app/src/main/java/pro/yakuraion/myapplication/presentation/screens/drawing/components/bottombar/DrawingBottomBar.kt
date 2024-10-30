@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import pro.yakuraion.myapplication.presentation.ui.theme.MyApplicationTheme
@@ -19,10 +20,12 @@ import pro.yakuraion.myapplication.presentation.ui.theme.MyApplicationTheme
 fun DrawingBottomBar(
     deleteFrameEnabled: Boolean,
     previousEnabled: Boolean,
+    nextEnabled: Boolean,
     onAddFrameClick: () -> Unit,
     onDeleteFrameClick: () -> Unit,
     onAddRectClick: () -> Unit,
-    onPreviousStepClick: () -> Unit,
+    onPreviousActionClick: () -> Unit,
+    onNextActionClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier) {
@@ -58,13 +61,25 @@ fun DrawingBottomBar(
         }
 
         IconButton(
-            onClick = onPreviousStepClick,
+            onClick = onPreviousActionClick,
             enabled = previousEnabled,
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = null,
                 tint = Color.Black,
+            )
+        }
+
+        IconButton(
+            onClick = onNextActionClick,
+            enabled = nextEnabled,
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = null,
+                tint = Color.Black,
+                modifier = Modifier.rotate(180f)
             )
         }
     }
@@ -77,10 +92,12 @@ private fun Preview() {
         DrawingBottomBar(
             deleteFrameEnabled = true,
             previousEnabled = true,
+            nextEnabled = true,
             onAddFrameClick = {},
             onDeleteFrameClick = {},
             onAddRectClick = {},
-            onPreviousStepClick = {},
+            onPreviousActionClick = {},
+            onNextActionClick = {},
             modifier = Modifier
                 .fillMaxWidth()
         )

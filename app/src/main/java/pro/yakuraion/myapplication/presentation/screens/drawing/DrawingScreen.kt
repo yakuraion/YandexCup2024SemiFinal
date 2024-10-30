@@ -10,10 +10,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import pro.yakuraion.myapplication.presentation.painting.canvas.DrawingCanvas
-import pro.yakuraion.myapplication.presentation.painting.models.Frame
 import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.bottombar.DrawingBottomBar
-import pro.yakuraion.myapplication.presentation.screens.drawing.state.DrawingScreenState
+import pro.yakuraion.myapplication.presentation.screens.drawing.models.ActiveFrame
+import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
 import pro.yakuraion.myapplication.presentation.ui.theme.MyApplicationTheme
 
 @Composable
@@ -26,7 +26,8 @@ fun DrawingScreen(
         onAddFrameClick = viewModel::onAddFrameClick,
         onDeleteFrameClick = viewModel::onDeleteFrameClick,
         onAddRectClick = viewModel::onAddRectClick,
-        onPreviousStepClick = viewModel::onPreviousStepClick,
+        onPreviousActionClick = viewModel::onPreviousActionClick,
+        onNextActionClick = viewModel::onNextActionClick,
         onNewAction = viewModel::onNewAction,
     )
 }
@@ -38,7 +39,8 @@ private fun DrawingScreen(
     onAddFrameClick: () -> Unit,
     onDeleteFrameClick: () -> Unit,
     onAddRectClick: () -> Unit,
-    onPreviousStepClick: () -> Unit,
+    onPreviousActionClick: () -> Unit,
+    onNextActionClick: () -> Unit,
     onNewAction: (action: FrameAction) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -52,12 +54,14 @@ private fun DrawingScreen(
                 .weight(1f),
         )
         DrawingBottomBar(
-            deleteFrameEnabled = state.previousFrame != null,
-            previousEnabled = state.activeFrame.actions.isNotEmpty(),
+            deleteFrameEnabled = state.deleteFrameAvailable,
+            previousEnabled = state.goToPreviousActionAvailable,
+            nextEnabled = state.goToNextActionAvailable,
             onAddFrameClick = onAddFrameClick,
             onDeleteFrameClick = onDeleteFrameClick,
             onAddRectClick = onAddRectClick,
-            onPreviousStepClick = onPreviousStepClick,
+            onPreviousActionClick = onPreviousActionClick,
+            onNextActionClick = onNextActionClick,
         )
     }
 }
@@ -67,12 +71,13 @@ private fun DrawingScreen(
 private fun Preview() {
     MyApplicationTheme {
         DrawingScreen(
-            state = DrawingScreenState(null, Frame()),
+            state = DrawingScreenState(null, ActiveFrame()),
             onCanvasSizeAvailable = {},
             onAddFrameClick = {},
             onDeleteFrameClick = {},
             onAddRectClick = {},
-            onPreviousStepClick = {},
+            onPreviousActionClick = {},
+            onNextActionClick = {},
             onNewAction = {},
         )
     }
