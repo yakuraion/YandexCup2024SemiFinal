@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -16,8 +17,10 @@ import pro.yakuraion.myapplication.presentation.ui.theme.MyApplicationTheme
 
 @Composable
 fun DrawingBottomBar(
+    deleteFrameEnabled: Boolean,
     previousEnabled: Boolean,
     onAddFrameClick: () -> Unit,
+    onDeleteFrameClick: () -> Unit,
     onAddRectClick: () -> Unit,
     onPreviousStepClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -28,6 +31,17 @@ fun DrawingBottomBar(
         ) {
             Icon(
                 imageVector = Icons.Default.Create,
+                contentDescription = null,
+                tint = Color.Black,
+            )
+        }
+
+        IconButton(
+            onClick = onDeleteFrameClick,
+            enabled = deleteFrameEnabled,
+        ) {
+            Icon(
+                imageVector = Icons.Default.Clear,
                 contentDescription = null,
                 tint = Color.Black,
             )
@@ -61,8 +75,10 @@ fun DrawingBottomBar(
 private fun Preview() {
     MyApplicationTheme {
         DrawingBottomBar(
+            deleteFrameEnabled = true,
             previousEnabled = true,
             onAddFrameClick = {},
+            onDeleteFrameClick = {},
             onAddRectClick = {},
             onPreviousStepClick = {},
             modifier = Modifier

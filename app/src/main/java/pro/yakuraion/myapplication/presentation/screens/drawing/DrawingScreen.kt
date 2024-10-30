@@ -24,6 +24,7 @@ fun DrawingScreen(
         state = viewModel.state.collectAsStateWithLifecycle().value,
         onCanvasSizeAvailable = viewModel::onCanvasSizeAvailable,
         onAddFrameClick = viewModel::onAddFrameClick,
+        onDeleteFrameClick = viewModel::onDeleteFrameClick,
         onAddRectClick = viewModel::onAddRectClick,
         onPreviousStepClick = viewModel::onPreviousStepClick,
         onNewAction = viewModel::onNewAction,
@@ -35,6 +36,7 @@ private fun DrawingScreen(
     state: DrawingScreenState,
     onCanvasSizeAvailable: (size: Size) -> Unit,
     onAddFrameClick: () -> Unit,
+    onDeleteFrameClick: () -> Unit,
     onAddRectClick: () -> Unit,
     onPreviousStepClick: () -> Unit,
     onNewAction: (action: FrameAction) -> Unit,
@@ -50,8 +52,10 @@ private fun DrawingScreen(
                 .weight(1f),
         )
         DrawingBottomBar(
+            deleteFrameEnabled = state.previousFrame != null,
             previousEnabled = state.activeFrame.actions.isNotEmpty(),
             onAddFrameClick = onAddFrameClick,
+            onDeleteFrameClick = onDeleteFrameClick,
             onAddRectClick = onAddRectClick,
             onPreviousStepClick = onPreviousStepClick,
         )
@@ -66,6 +70,7 @@ private fun Preview() {
             state = DrawingScreenState(null, Frame()),
             onCanvasSizeAvailable = {},
             onAddFrameClick = {},
+            onDeleteFrameClick = {},
             onAddRectClick = {},
             onPreviousStepClick = {},
             onNewAction = {},

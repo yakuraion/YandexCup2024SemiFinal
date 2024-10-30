@@ -37,8 +37,13 @@ class DrawingViewModel : ViewModel() {
     }
 
     fun onAddFrameClick() {
-        pushStateToDocument()
+        document.update { it.copy(frames = it.frames + activeFrame.value) }
         activeFrame.update { Frame() }
+    }
+
+    fun onDeleteFrameClick() {
+        activeFrame.update { document.value.frames.last() }
+        document.update { it.copy(frames = it.frames.dropLast(1)) }
     }
 
     fun onPreviousStepClick() {
@@ -65,10 +70,6 @@ class DrawingViewModel : ViewModel() {
             centerOffset = Offset(canvasSize.width / 2, canvasSize.height / 2),
             color = Color.Red,
         )
-    }
-
-    private fun pushStateToDocument() {
-        document.update { it.copy(frames = it.frames + activeFrame.value) }
     }
 
     companion object {
