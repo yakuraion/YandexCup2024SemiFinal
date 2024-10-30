@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import pro.yakuraion.myapplication.presentation.painting.canvas.DrawingCanvas
+import pro.yakuraion.myapplication.presentation.painting.models.Frame
 import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.bottombar.DrawingBottomBar
 import pro.yakuraion.myapplication.presentation.screens.drawing.state.DrawingScreenState
@@ -20,8 +21,9 @@ fun DrawingScreen(
     viewModel: DrawingViewModel = koinViewModel(),
 ) {
     DrawingScreen(
-        state = viewModel.state,
+        state = viewModel.state.collectAsStateWithLifecycle().value,
         onCanvasSizeAvailable = viewModel::onCanvasSizeAvailable,
+        onAddFrameClick = viewModel::onAddFrameClick,
         onAddRectClick = viewModel::onAddRectClick,
         onPreviousStepClick = viewModel::onPreviousStepClick,
         onNewAction = viewModel::onNewAction,
@@ -32,14 +34,15 @@ fun DrawingScreen(
 private fun DrawingScreen(
     state: DrawingScreenState,
     onCanvasSizeAvailable: (size: Size) -> Unit,
+    onAddFrameClick: () -> Unit,
     onAddRectClick: () -> Unit,
     onPreviousStepClick: () -> Unit,
     onNewAction: (action: FrameAction) -> Unit,
 ) {
-    val frame = state.frame.collectAsStateWithLifecycle().value
     Column(modifier = Modifier.fillMaxSize()) {
         DrawingCanvas(
-            snapshot = frame.snapshot,
+            snapshot = state.activeFrame.snapshot,
+            previousFrameSnapshot = state.previousFrame?.snapshot,
             onCanvasSizeAvailable = onCanvasSizeAvailable,
             onNewAction = onNewAction,
             modifier = Modifier
@@ -47,20 +50,22 @@ private fun DrawingScreen(
                 .weight(1f),
         )
         DrawingBottomBar(
-            previousEnabled = frame.actions.isNotEmpty(),
+            previousEnabled = state.activeFrame.actions.isNotEmpty(),
+            onAddFrameClick = onAddFrameClick,
             onAddRectClick = onAddRectClick,
             onPreviousStepClick = onPreviousStepClick,
         )
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun Preview() {
     MyApplicationTheme {
         DrawingScreen(
-            state = DrawingScreenState(),
+            state = DrawingScreenState(null, Frame()),
             onCanvasSizeAvailable = {},
+            onAddFrameClick = {},
             onAddRectClick = {},
             onPreviousStepClick = {},
             onNewAction = {},
