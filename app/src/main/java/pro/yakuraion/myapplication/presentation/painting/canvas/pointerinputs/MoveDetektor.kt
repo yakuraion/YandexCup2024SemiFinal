@@ -14,8 +14,8 @@ import pro.yakuraion.myapplication.presentation.painting.utils.DrawingCalculatio
 
 fun Modifier.moveDetector(
     snapshot: FrameSnapshot,
-    onMove: (obj: FrameObject, newAttrs: FrameObjectAttrs) -> Unit,
-    onFinishAction: (obj: FrameObject, action: MoveAction) -> Unit,
+    onAction: (obj: FrameObject, newAttrs: FrameObjectAttrs) -> Unit,
+    onFinishAction: (action: MoveAction) -> Unit,
 ): Modifier {
     return pointerInput(snapshot) {
         awaitPointerEventScope {
@@ -24,18 +24,19 @@ fun Modifier.moveDetector(
                 val obj = getObjByPosition(snapshot, downEventChange.position) ?: continue
                 val attrs = snapshot.map[obj] ?: continue
 
-                var action = MoveAction(attrs.centerOffset, attrs.centerOffset)
-
+                var newCenterOffset = attrs.centerOffset
                 var drag: PointerInputChange?
                 do {
                     drag = awaitDragOrCancellation(downEventChange.id)
                         ?.also { notNullDrag ->
                             val delta = (notNullDrag.position - notNullDrag.previousPosition)
-                            action = MoveAction(action.oldCenterOffset, action.newCenterOffset + delta)
-                            onMove.invoke(obj, action.applyTo(attrs))
+                            newCenterOffset += delta
+                            val newAttrs = attrs.copy(centerOffset = newCenterOffset)
+                            onAction.invoke(obj, newAttrs)
                         }
                 } while (drag != null)
-                onFinishAction(obj, action)
+                val action = MoveAction(obj.id, newCenterOffset)
+                onFinishAction(action)
             }
         }
     }

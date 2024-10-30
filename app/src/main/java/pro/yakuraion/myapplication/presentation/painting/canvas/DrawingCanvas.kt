@@ -7,9 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import pro.yakuraion.myapplication.presentation.painting.canvas.pointerinputs.moveDetector
-import pro.yakuraion.myapplication.presentation.painting.models.Frame
 import pro.yakuraion.myapplication.presentation.painting.models.FrameObjectAttrs
 import pro.yakuraion.myapplication.presentation.painting.models.FrameSnapshot
 import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
@@ -17,33 +17,36 @@ import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObj
 
 @Composable
 fun DrawingCanvas(
-    frame: Frame,
-    onNewAction: (obj: FrameObject, action: FrameAction) -> Unit,
+    snapshot: FrameSnapshot,
+    onCanvasSizeAvailable: (size: Size) -> Unit,
+    onNewAction: (action: FrameAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var attrsInChange: AttrsInChange? by remember { mutableStateOf(null) }
+    var activeObject: ActiveObject? by remember { mutableStateOf(null) }
 
     Canvas(
         modifier = modifier
             .moveDetector(
-                snapshot = frame.snapshot,
-                onMove = { obj, newAttrs ->
-                    attrsInChange = AttrsInChange(obj, newAttrs)
+                snapshot = snapshot,
+                onAction = { obj, newAttrs ->
+                    activeObject = ActiveObject(obj, newAttrs)
                 },
-                onFinishAction = { obj, action ->
-                    onNewAction(obj, action)
-                }
+                onFinishAction = {
+                    activeObject = null
+                    onNewAction(it)
+                },
             )
     ) {
-        draw(frame.snapshot, attrsInChange)
+        draw(snapshot, activeObject)
+        onCanvasSizeAvailable.invoke(size)
     }
 }
 
-fun DrawScope.draw(snapshot: FrameSnapshot, attrsInChange: AttrsInChange?) {
+private fun DrawScope.draw(snapshot: FrameSnapshot, activeObject: ActiveObject?) {
     for ((obj, attrs) in snapshot.map) {
         with(obj) {
-            if (attrsInChange?.obj == obj) {
-                draw(attrsInChange.attrs)
+            if (activeObject?.obj == obj) {
+                draw(activeObject.attrs)
             } else {
                 draw(attrs)
             }
@@ -51,4 +54,4 @@ fun DrawScope.draw(snapshot: FrameSnapshot, attrsInChange: AttrsInChange?) {
     }
 }
 
-class AttrsInChange(val obj: FrameObject, val attrs: FrameObjectAttrs)
+private class ActiveObject(val obj: FrameObject, val attrs: FrameObjectAttrs)

@@ -1,23 +1,26 @@
 package pro.yakuraion.myapplication.presentation.painting.models
 
-import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObject
+import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
+import timber.log.Timber
 
-data class Frame(
-    val objects: List<FrameObject> = emptyList(),
-    val steps: List<FrameStep> = emptyList(),
-) {
+data class Frame(val actions: List<FrameAction> = emptyList()) {
 
-    val snapshot: FrameSnapshot = calculateSnapshot()
+    val snapshot: FrameSnapshot
 
-    private fun calculateSnapshot(): FrameSnapshot {
-        val map = objects.associateWith { obj ->
-            val objSteps = steps.filter { it.obj == obj }
-            var attrs = FrameObjectAttrs.notExist()
-            for (step in objSteps) {
-                attrs = step.action.applyTo(attrs)
-            }
-            attrs
+    init {
+        var snapshot = FrameSnapshot()
+        for (action in actions) {
+            snapshot = action.applyTo(snapshot)
         }
-        return FrameSnapshot(map)
+        this.snapshot = snapshot
+        Timber.d("new snapshot = ${this.snapshot}")
+    }
+
+    operator fun plus(action: FrameAction): Frame {
+        return Frame(actions = actions + action)
+    }
+
+    fun stepBack(): Frame {
+        return Frame(actions = actions.dropLast(1))
     }
 }
