@@ -12,6 +12,7 @@ import org.koin.androidx.compose.koinViewModel
 import pro.yakuraion.myapplication.presentation.painting.canvas.DrawingCanvas
 import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.bottombar.DrawingBottomBar
+import pro.yakuraion.myapplication.presentation.screens.drawing.components.preview.DrawingPreviewBox
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.ActiveFrame
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
 import pro.yakuraion.myapplication.presentation.ui.theme.MyApplicationTheme
@@ -28,6 +29,8 @@ fun DrawingScreen(
         onAddRectClick = viewModel::onAddRectClick,
         onPreviousActionClick = viewModel::onPreviousActionClick,
         onNextActionClick = viewModel::onNextActionClick,
+        onPreviewClick = viewModel::onPreviewClick,
+        onCancelPreviewClick = viewModel::onCancelPreviewClick,
         onNewAction = viewModel::onNewAction,
     )
 }
@@ -41,28 +44,60 @@ private fun DrawingScreen(
     onAddRectClick: () -> Unit,
     onPreviousActionClick: () -> Unit,
     onNextActionClick: () -> Unit,
+    onPreviewClick: () -> Unit,
+    onCancelPreviewClick: () -> Unit,
     onNewAction: (action: FrameAction) -> Unit,
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        DrawingCanvas(
-            snapshot = state.activeFrame.snapshot,
-            previousFrameSnapshot = state.previousFrame?.snapshot,
-            onCanvasSizeAvailable = onCanvasSizeAvailable,
-            onNewAction = onNewAction,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-        )
-        DrawingBottomBar(
-            deleteFrameEnabled = state.deleteFrameAvailable,
-            previousEnabled = state.goToPreviousActionAvailable,
-            nextEnabled = state.goToNextActionAvailable,
-            onAddFrameClick = onAddFrameClick,
-            onDeleteFrameClick = onDeleteFrameClick,
-            onAddRectClick = onAddRectClick,
-            onPreviousActionClick = onPreviousActionClick,
-            onNextActionClick = onNextActionClick,
-        )
+    when (state) {
+        is DrawingScreenState.Drawing -> {
+            Column(modifier = Modifier.fillMaxSize()) {
+                DrawingCanvas(
+                    snapshot = state.activeFrame.snapshot,
+                    previousFrameSnapshot = state.previousFrame?.snapshot,
+                    onCanvasSizeAvailable = onCanvasSizeAvailable,
+                    onNewAction = onNewAction,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                )
+                DrawingBottomBar(
+                    deleteFrameEnabled = state.deleteFrameAvailable,
+                    previousEnabled = state.goToPreviousActionAvailable,
+                    nextEnabled = state.goToNextActionAvailable,
+                    onAddFrameClick = onAddFrameClick,
+                    onDeleteFrameClick = onDeleteFrameClick,
+                    onAddRectClick = onAddRectClick,
+                    onPreviousActionClick = onPreviousActionClick,
+                    onNextActionClick = onNextActionClick,
+                    onPreviewClick = onPreviewClick,
+                    onCancelPreviewClick = onCancelPreviewClick,
+                )
+            }
+        }
+
+        is DrawingScreenState.Preview -> {
+            Column(modifier = Modifier.fillMaxSize()) {
+                DrawingPreviewBox(
+                    document = state.document,
+                    size = state.size,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                )
+                DrawingBottomBar(
+                    deleteFrameEnabled = false,
+                    previousEnabled = false,
+                    nextEnabled = false,
+                    onAddFrameClick = onAddFrameClick,
+                    onDeleteFrameClick = onDeleteFrameClick,
+                    onAddRectClick = onAddRectClick,
+                    onPreviousActionClick = onPreviousActionClick,
+                    onNextActionClick = onNextActionClick,
+                    onPreviewClick = onPreviewClick,
+                    onCancelPreviewClick = onCancelPreviewClick,
+                )
+            }
+        }
     }
 }
 
@@ -71,13 +106,15 @@ private fun DrawingScreen(
 private fun Preview() {
     MyApplicationTheme {
         DrawingScreen(
-            state = DrawingScreenState(null, ActiveFrame()),
+            state = DrawingScreenState.Drawing(null, ActiveFrame()),
             onCanvasSizeAvailable = {},
             onAddFrameClick = {},
             onDeleteFrameClick = {},
             onAddRectClick = {},
             onPreviousActionClick = {},
             onNextActionClick = {},
+            onPreviewClick = {},
+            onCancelPreviewClick = {},
             onNewAction = {},
         )
     }

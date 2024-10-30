@@ -19,20 +19,33 @@ import kotlin.random.Random
 
 class DrawingViewModel : ViewModel() {
 
+    private var canvasSize: Size = Size(0f, 0f)
+
     private val document: MutableStateFlow<Document> = MutableStateFlow(Document())
 
     private val activeFrame: MutableStateFlow<ActiveFrame> = MutableStateFlow(ActiveFrame())
 
-    private var canvasSize: Size = Size(0f, 0f)
+    private val inPreview: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    val state: StateFlow<DrawingScreenState> = combineStates(
+    private val drawingState: StateFlow<DrawingScreenState.Drawing> = combineStates(
         document,
         activeFrame,
     ) { document, activeFrame ->
-        DrawingScreenState(
+        DrawingScreenState.Drawing(
             previousFrame = document.frames.lastOrNull(),
             activeFrame = activeFrame,
         )
+    }
+
+    val state: StateFlow<DrawingScreenState> = combineStates(
+        drawingState,
+        inPreview,
+    ) { drawingState, inPreview ->
+        if (inPreview) {
+            createPreviewState()
+        } else {
+            drawingState
+        }
     }
 
     fun onCanvasSizeAvailable(size: Size) {
@@ -64,6 +77,14 @@ class DrawingViewModel : ViewModel() {
         activeFrame.update { it.copy(appliedActions = it.appliedActions + 1) }
     }
 
+    fun onPreviewClick() {
+        inPreview.update { true }
+    }
+
+    fun onCancelPreviewClick() {
+        inPreview.update { false }
+    }
+
     fun onAddRectClick() {
         val newObj = RectObject(id = Random.nextInt())
         addNewAction(getDefaultCreateAction(newObj))
@@ -93,6 +114,17 @@ class DrawingViewModel : ViewModel() {
             size = Size(DEFAULT_CREATE_WIDTH, DEFAULT_CREATE_HEIGHT),
             centerOffset = Offset(canvasSize.width / 2, canvasSize.height / 2),
             color = Color.Red,
+        )
+    }
+
+    private fun createPreviewState(): DrawingScreenState.Preview {
+        val document = document.value
+        val activeFrame = activeFrame.value
+        val lastFrame = activeFrame.copy(frame = activeFrame.frame.goToAction(activeFrame.appliedActions))
+        val documentWithLastFrame = document.copy(frames = document.frames + lastFrame.frame)
+        return DrawingScreenState.Preview(
+            document = documentWithLastFrame,
+            size = canvasSize,
         )
     }
 

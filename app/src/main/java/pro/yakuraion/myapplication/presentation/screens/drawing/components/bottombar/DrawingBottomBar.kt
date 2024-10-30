@@ -7,6 +7,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -26,6 +28,8 @@ fun DrawingBottomBar(
     onAddRectClick: () -> Unit,
     onPreviousActionClick: () -> Unit,
     onNextActionClick: () -> Unit,
+    onPreviewClick: () -> Unit,
+    onCancelPreviewClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier) {
@@ -82,6 +86,22 @@ fun DrawingBottomBar(
                 modifier = Modifier.rotate(180f)
             )
         }
+
+        IconButton(onClick = onPreviewClick) {
+            Icon(
+                imageVector = Icons.Default.PlayArrow,
+                contentDescription = null,
+                tint = Color.Black,
+            )
+        }
+
+        IconButton(onClick = onCancelPreviewClick) {
+            Icon(
+                imageVector = Icons.Default.ExitToApp,
+                contentDescription = null,
+                tint = Color.Black,
+            )
+        }
     }
 }
 
@@ -98,6 +118,8 @@ private fun Preview() {
             onAddRectClick = {},
             onPreviousActionClick = {},
             onNextActionClick = {},
+            onPreviewClick = {},
+            onCancelPreviewClick = {},
             modifier = Modifier
                 .fillMaxWidth()
         )
