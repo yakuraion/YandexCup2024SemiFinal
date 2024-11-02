@@ -10,33 +10,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.drawscope.DrawScope
+import pro.yakuraion.myapplication.core.applyIf
 import pro.yakuraion.myapplication.presentation.painting.canvas.pointerinputs.moveDetector
-import pro.yakuraion.myapplication.presentation.painting.models.FrameObjectAttrs
-import pro.yakuraion.myapplication.presentation.painting.models.FrameSnapshot
 import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
-import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObject
+import pro.yakuraion.myapplication.presentation.painting.models.frames.ActiveFrame
+import pro.yakuraion.myapplication.presentation.painting.models.frames.StaticFrame
 
 @Composable
 fun DrawingCanvas(
-    snapshot: FrameSnapshot,
-    previousFrameSnapshot: FrameSnapshot?,
-    onCanvasSizeAvailable: (size: Size) -> Unit,
+    frame: ActiveFrame,
+    previousFrame: StaticFrame?,
     onNewAction: (action: FrameAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
-        if (previousFrameSnapshot != null) {
+        if (previousFrame != null) {
             PreviousFrameCanvas(
-                snapshot = previousFrameSnapshot,
+                frame = previousFrame,
                 modifier = Modifier.fillMaxSize(),
             )
         }
 
         WorkingCanvas(
-            snapshot = snapshot,
-            onCanvasSizeAvailable = onCanvasSizeAvailable,
+            frame = frame,
             onNewAction = onNewAction,
             modifier = Modifier.fillMaxSize(),
         )
@@ -45,54 +41,43 @@ fun DrawingCanvas(
 
 @Composable
 private fun WorkingCanvas(
-    snapshot: FrameSnapshot,
-    onCanvasSizeAvailable: (size: Size) -> Unit,
+    frame: ActiveFrame,
     onNewAction: (action: FrameAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var activeObject: ActiveObject? by remember { mutableStateOf(null) }
+    val activeObject = frame.activeObject
+    var activeObjectAttrs by remember(frame) { mutableStateOf(frame.activeObject?.attrs) }
 
     Canvas(
         modifier = modifier
-            .moveDetector(
-                snapshot = snapshot,
-                onAction = { obj, newAttrs ->
-                    activeObject = ActiveObject(obj, newAttrs)
-                },
-                onFinishAction = {
-                    activeObject = null
-                    onNewAction(it)
-                },
-            )
+            .applyIf(activeObject?.shape?.modifiable == true && activeObjectAttrs != null) {
+                moveDetector(
+                    key = frame,
+                    activeAttrs = requireNotNull(activeObjectAttrs),
+                    onAction = { activeObjectAttrs = it },
+                    onFinishAction = onNewAction,
+                )
+            }
     ) {
-        draw(snapshot, activeObject)
-        onCanvasSizeAvailable.invoke(size)
+        frame.staticBitmap?.let { drawImage(it) }
+
+        if (activeObject != null && activeObjectAttrs != null) {
+            with(activeObject.shape) {
+                draw(requireNotNull(activeObjectAttrs))
+            }
+        }
     }
 }
 
 @Composable
 private fun PreviousFrameCanvas(
-    snapshot: FrameSnapshot,
+    frame: StaticFrame,
     modifier: Modifier = Modifier,
 ) {
     Canvas(
         modifier = modifier
             .alpha(0.3f)
     ) {
-        draw(snapshot, null)
+        drawImage(frame.bitmap)
     }
 }
-
-private fun DrawScope.draw(snapshot: FrameSnapshot, activeObject: ActiveObject?) {
-    for ((obj, attrs) in snapshot.map) {
-        with(obj) {
-            if (activeObject?.obj == obj) {
-                draw(activeObject.attrs)
-            } else {
-                draw(attrs)
-            }
-        }
-    }
-}
-
-private class ActiveObject(val obj: FrameObject, val attrs: FrameObjectAttrs)

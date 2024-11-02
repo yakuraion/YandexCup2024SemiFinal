@@ -1,25 +1,25 @@
 package pro.yakuraion.myapplication.presentation.screens.drawing.models
 
-import androidx.compose.ui.geometry.Size
-import pro.yakuraion.myapplication.presentation.painting.models.Document
-import pro.yakuraion.myapplication.presentation.painting.models.Frame
+import kotlinx.coroutines.flow.StateFlow
+import pro.yakuraion.myapplication.core.mapState
+import pro.yakuraion.myapplication.presentation.painting.models.frames.ActiveFrame
+import pro.yakuraion.myapplication.presentation.painting.models.frames.StaticFrame
 
 sealed class DrawingScreenState {
 
     data class Drawing(
-        val previousFrame: Frame?,
-        val activeFrame: ActiveFrame,
+        val activeFrame: StateFlow<ActiveFrame>,
+        val previousFrame: StateFlow<StaticFrame?>,
+        val canGoBack: StateFlow<Boolean>,
+        val canGoForward: StateFlow<Boolean>,
+        val isPenEnabled: StateFlow<Boolean>,
     ) : DrawingScreenState() {
 
-        val deleteFrameAvailable: Boolean = previousFrame != null
-
-        val goToPreviousActionAvailable: Boolean = activeFrame.appliedActions > 0
-
-        val goToNextActionAvailable: Boolean = activeFrame.appliedActions < activeFrame.frame.actions.count()
+        val deleteFrameAvailable: StateFlow<Boolean> = previousFrame.mapState { it != null }
     }
 
     data class Preview(
-        val document: Document,
-        val size: Size,
+        val frameIndex: Long,
+        val staticFrame: StaticFrame,
     ) : DrawingScreenState()
 }

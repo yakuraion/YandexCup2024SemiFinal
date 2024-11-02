@@ -7,124 +7,96 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import pro.yakuraion.myapplication.core.combineStates
 import pro.yakuraion.myapplication.presentation.painting.models.Document
-import pro.yakuraion.myapplication.presentation.painting.models.actions.CreateAction
+import pro.yakuraion.myapplication.presentation.painting.models.actions.CreateShapeAction
 import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
-import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObject
-import pro.yakuraion.myapplication.presentation.painting.models.objects.RectObject
-import pro.yakuraion.myapplication.presentation.screens.drawing.models.ActiveFrame
+import pro.yakuraion.myapplication.presentation.painting.models.framesranges.SingleFramesRange
+import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectAttrs
+import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectShape
+import pro.yakuraion.myapplication.presentation.painting.models.objects.RectObjectShape
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
-import kotlin.random.Random
+import timber.log.Timber
 
 class DrawingViewModel : ViewModel() {
 
-    private var canvasSize: Size = Size(0f, 0f)
+    // todo
+    private val canvasSize: Size = Size(1080.0f, 2274.0f)
 
-    private val document: MutableStateFlow<Document> = MutableStateFlow(Document())
+    private val document: Document = Document(canvasSize)
 
-    private val activeFrame: MutableStateFlow<ActiveFrame> = MutableStateFlow(ActiveFrame())
+    private val isPenEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    private val inPreview: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val drawingState: DrawingScreenState.Drawing = DrawingScreenState.Drawing(
+        activeFrame = document.activeFrame,
+        previousFrame = document.previousFrame,
+        canGoBack = document.canGoBack(),
+        canGoForward = document.canGoForward(),
+        isPenEnabled = isPenEnabled,
+    )
 
-    private val drawingState: StateFlow<DrawingScreenState.Drawing> = combineStates(
-        document,
-        activeFrame,
-    ) { document, activeFrame ->
-        DrawingScreenState.Drawing(
-            previousFrame = document.frames.lastOrNull(),
-            activeFrame = activeFrame,
-        )
-    }
-
-    val state: StateFlow<DrawingScreenState> = combineStates(
-        drawingState,
-        inPreview,
-    ) { drawingState, inPreview ->
-        if (inPreview) {
-            createPreviewState()
-        } else {
-            drawingState
-        }
-    }
-
-    fun onCanvasSizeAvailable(size: Size) {
-        canvasSize = size
-    }
+    private val _state: MutableStateFlow<DrawingScreenState> = MutableStateFlow(drawingState)
+    val state: StateFlow<DrawingScreenState> = _state
 
     fun onAddFrameClick() {
-        fixAppliedActions()
-        document.update { it.copy(frames = it.frames + activeFrame.value.frame) }
-        activeFrame.update { ActiveFrame() }
+        val framesRange = SingleFramesRange(canvasSize)
+        document.addNewFramesRanges(framesRange)
     }
 
     fun onDeleteFrameClick() {
-        val prevFrame = document.value.frames.last()
-        activeFrame.update {
-            ActiveFrame(
-                frame = prevFrame,
-                appliedActions = prevFrame.actions.count(),
-            )
-        }
-        document.update { it.copy(frames = it.frames.dropLast(1)) }
+        document.deleteLastFrame()
     }
 
     fun onPreviousActionClick() {
-        activeFrame.update { it.copy(appliedActions = it.appliedActions - 1) }
+        document.goBack()
     }
 
     fun onNextActionClick() {
-        activeFrame.update { it.copy(appliedActions = it.appliedActions + 1) }
+        document.goForward()
     }
 
-    fun onPreviewClick() {
-        inPreview.update { true }
-    }
-
-    fun onCancelPreviewClick() {
-        inPreview.update { false }
+    fun onAddPenMove() {
+        isPenEnabled.update { !it }
     }
 
     fun onAddRectClick() {
-        val newObj = RectObject(id = Random.nextInt())
-        addNewAction(getDefaultCreateAction(newObj))
+        document.addNewAction(getDefaultCreateShapeAction(RectObjectShape))
+    }
+
+    fun onPreviewClick() {
+        setPreviewFrame(0)
+
+    }
+
+    fun onCancelPreviewClick() {
+        _state.update { drawingState }
     }
 
     fun onNewAction(action: FrameAction) {
-        addNewAction(action)
+        document.addNewAction(action)
     }
 
-    private fun addNewAction(action: FrameAction) {
-        fixAppliedActions()
-        activeFrame.update { activeFrame ->
-            ActiveFrame(
-                frame = activeFrame.frame + action,
-                appliedActions = activeFrame.appliedActions + 1,
-            )
+    fun onNewPreviewFrameRequest(lastIndex: Long) {
+        Timber.tag("meme").d("onNewPreviewFrameRequest lastIndex = $lastIndex")
+        if (lastIndex < document.getStaticFramesCount() - 1) {
+            setPreviewFrame(lastIndex + 1)
+        } else {
+            setPreviewFrame(0)
         }
     }
 
-    private fun fixAppliedActions() {
-        activeFrame.update { it.copy(frame = it.frame.goToAction(it.appliedActions)) }
+    private fun setPreviewFrame(index: Long) {
+        Timber.tag("meme").d("setPreviewFrame index = $index")
+        _state.update { DrawingScreenState.Preview(index, document.getStaticFrame(index)) }
     }
 
-    private fun getDefaultCreateAction(obj: FrameObject): CreateAction {
-        return CreateAction(
-            obj = obj,
-            size = Size(DEFAULT_CREATE_WIDTH, DEFAULT_CREATE_HEIGHT),
-            centerOffset = Offset(canvasSize.width / 2, canvasSize.height / 2),
-            color = Color.Red,
-        )
-    }
-
-    private fun createPreviewState(): DrawingScreenState.Preview {
-        val document = document.value
-        val activeFrame = activeFrame.value
-        val lastFrame = activeFrame.copy(frame = activeFrame.frame.goToAction(activeFrame.appliedActions))
-        val documentWithLastFrame = document.copy(frames = document.frames + lastFrame.frame)
-        return DrawingScreenState.Preview(
-            document = documentWithLastFrame,
-            size = canvasSize,
+    private fun getDefaultCreateShapeAction(shape: FrameObjectShape): CreateShapeAction {
+        return CreateShapeAction(
+            shape = shape,
+            attrs = FrameObjectAttrs(
+                size = Size(DEFAULT_CREATE_WIDTH, DEFAULT_CREATE_HEIGHT),
+                centerOffset = Offset(canvasSize.width / 2, canvasSize.height / 2),
+                color = Color.Red,
+            ),
         )
     }
 

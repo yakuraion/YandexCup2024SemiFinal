@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
@@ -25,6 +26,7 @@ fun DrawingBottomBar(
     nextEnabled: Boolean,
     onAddFrameClick: () -> Unit,
     onDeleteFrameClick: () -> Unit,
+    onAddPenMove: () -> Unit,
     onAddRectClick: () -> Unit,
     onPreviousActionClick: () -> Unit,
     onNextActionClick: () -> Unit,
@@ -37,7 +39,7 @@ fun DrawingBottomBar(
             onClick = onAddFrameClick,
         ) {
             Icon(
-                imageVector = Icons.Default.Create,
+                imageVector = Icons.Default.Add,
                 contentDescription = null,
                 tint = Color.Black,
             )
@@ -55,10 +57,20 @@ fun DrawingBottomBar(
         }
 
         IconButton(
+            onClick = onAddPenMove,
+        ) {
+            Icon(
+                imageVector = Icons.Default.Edit,
+                contentDescription = null,
+                tint = Color.Black,
+            )
+        }
+
+        IconButton(
             onClick = onAddRectClick,
         ) {
             Icon(
-                imageVector = Icons.Default.Add,
+                imageVector = Icons.Default.PlayArrow,
                 contentDescription = null,
                 tint = Color.Black,
             )
@@ -115,6 +127,7 @@ private fun Preview() {
             nextEnabled = true,
             onAddFrameClick = {},
             onDeleteFrameClick = {},
+            onAddPenMove = {},
             onAddRectClick = {},
             onPreviousActionClick = {},
             onNextActionClick = {},

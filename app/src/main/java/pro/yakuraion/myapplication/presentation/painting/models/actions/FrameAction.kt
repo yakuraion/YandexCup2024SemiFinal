@@ -1,8 +1,19 @@
 package pro.yakuraion.myapplication.presentation.painting.models.actions
 
-import pro.yakuraion.myapplication.presentation.painting.models.FrameSnapshot
+import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectAttrs
+import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectShape
 
-abstract class FrameAction {
+sealed class FrameAction {
 
-    abstract fun applyTo(snapshot: FrameSnapshot): FrameSnapshot
+    abstract class CreateAction : FrameAction() {
+
+        abstract val shape: FrameObjectShape
+
+        abstract val attrs: FrameObjectAttrs
+    }
+
+    abstract class ModifyAction : FrameAction() {
+
+        abstract fun modify(attrs: FrameObjectAttrs): FrameObjectAttrs
+    }
 }

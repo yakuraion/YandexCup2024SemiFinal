@@ -1,4 +1,4 @@
-package pro.yakuraion.myapplication.presentation.painting.models
+package pro.yakuraion.myapplication.presentation.painting.models.objects
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
