@@ -6,6 +6,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import pro.yakuraion.myapplication.presentation.painting.canvas.PaintingCanvas
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.DrawingContentScaffold
+import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingInput
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
 
 @Composable
@@ -41,14 +42,16 @@ fun DrawingWorkingContent(
             PaintingCanvas(
                 frame = state.activeFrame.collectAsStateWithLifecycle().value,
                 previousFrame = state.previousFrame.collectAsStateWithLifecycle().value,
+                drawingInput = state.drawingInput.collectAsStateWithLifecycle().value,
                 onNewAction = onNewAction,
             )
         },
         bottomBar = {
+            val drawingInput = state.drawingInput.collectAsStateWithLifecycle().value
             DrawingWorkingBottomBar(
-                isPenActive = state.isPenActive.collectAsStateWithLifecycle().value,
-                isEraserActive = state.isEraserActive.collectAsStateWithLifecycle().value,
-                isInstrumentsActive = state.isInstrumentsActive.collectAsStateWithLifecycle().value,
+                isPenActive = drawingInput is DrawingInput.Pen,
+                isEraserActive = drawingInput is DrawingInput.Eraser,
+                isInstrumentsActive = false,
                 onPenClick = onPenClick,
                 onEraserClick = onEraserClick,
                 onInstrumentsClick = onInstrumentsClick,

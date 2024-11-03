@@ -7,12 +7,14 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import pro.yakuraion.myapplication.core.combineStates
 import pro.yakuraion.myapplication.core.mapState
 import pro.yakuraion.myapplication.presentation.painting.models.Document
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
 import pro.yakuraion.myapplication.presentation.painting.models.framesranges.SingleFramesRange
 import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectAttributes
 import pro.yakuraion.myapplication.presentation.painting.models.objects.RectObject
+import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingInput
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
 
 class DrawingViewModel : ViewModel() {
@@ -22,15 +24,30 @@ class DrawingViewModel : ViewModel() {
 
     private val document: Document = Document(canvasSize)
 
+    private val drawingInputType: MutableStateFlow<DrawingInputType> = MutableStateFlow(DrawingInputType.PEN)
+
+    private val radius: MutableStateFlow<Float> = MutableStateFlow(10f)
+
+    private val color: MutableStateFlow<Color> = MutableStateFlow(Color.Red)
+
+    private val drawingInput: StateFlow<DrawingInput> = combineStates(
+        drawingInputType,
+        radius,
+        color,
+    ) { inputType, radius, color ->
+        when (inputType) {
+            DrawingInputType.PEN -> DrawingInput.Pen(radius, color)
+            DrawingInputType.ERASER -> DrawingInput.Eraser(radius)
+        }
+    }
+
     private val workingState: DrawingScreenState.Working = DrawingScreenState.Working(
         activeFrame = document.activeFrame,
         previousFrame = document.previousFrame,
         canGoBack = document.canGoBack(),
         canGoForward = document.canGoForward(),
         canDeleteFrame = document.previousFrame.mapState { it != null },
-        isPenActive = MutableStateFlow(true),
-        isEraserActive = MutableStateFlow(false),
-        isInstrumentsActive = MutableStateFlow(false),
+        drawingInput = drawingInput,
     )
 
     private val _state: MutableStateFlow<DrawingScreenState> = MutableStateFlow(workingState)
@@ -66,11 +83,11 @@ class DrawingViewModel : ViewModel() {
     }
 
     fun onWorkingPenClick() {
-
+        drawingInputType.update { DrawingInputType.PEN }
     }
 
     fun onWorkingEraserClick() {
-
+        drawingInputType.update { DrawingInputType.ERASER }
     }
 
     fun onWorkingInstrumentsClick() {
@@ -105,6 +122,10 @@ class DrawingViewModel : ViewModel() {
                 color = Color.Red,
             ),
         )
+    }
+
+    enum class DrawingInputType {
+        PEN, ERASER
     }
 
     companion object {

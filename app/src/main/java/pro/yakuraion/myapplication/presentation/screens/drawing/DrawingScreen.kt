@@ -3,6 +3,7 @@ package pro.yakuraion.myapplication.presentation.screens.drawing
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,6 +12,7 @@ import pro.yakuraion.myapplication.presentation.painting.models.ActiveFrame
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.preview.DrawingPreviewContent
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.DrawingWorkingContent
+import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingInput
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
 import pro.yakuraion.myapplication.presentation.theme.MyApplicationTheme
 
@@ -89,9 +91,7 @@ private fun Preview() {
                 canGoBack = MutableStateFlow(true),
                 canGoForward = MutableStateFlow(true),
                 canDeleteFrame = MutableStateFlow(false),
-                isPenActive = MutableStateFlow(true),
-                isEraserActive = MutableStateFlow(false),
-                isInstrumentsActive = MutableStateFlow(false),
+                drawingInput = MutableStateFlow(DrawingInput.Pen(10f, Color.Blue))
             ),
             onWorkingGoBackClick = {},
             onWorkingGoForwardClick = {},

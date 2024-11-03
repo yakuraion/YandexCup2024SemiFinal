@@ -12,9 +12,7 @@ sealed class DrawingScreenState {
         val canGoBack: StateFlow<Boolean>,
         val canGoForward: StateFlow<Boolean>,
         val canDeleteFrame: StateFlow<Boolean>,
-        val isPenActive: StateFlow<Boolean>,
-        val isEraserActive: StateFlow<Boolean>,
-        val isInstrumentsActive: StateFlow<Boolean>,
+        val drawingInput: StateFlow<DrawingInput>,
     ) : DrawingScreenState()
 
     data class Preview(

@@ -15,24 +15,23 @@ import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import pro.yakuraion.myapplication.presentation.painting.models.ActiveFrame
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
+import pro.yakuraion.myapplication.presentation.painting.models.objects.EraserObject
 import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectAttributes
-import pro.yakuraion.myapplication.presentation.painting.models.objects.PenObject
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingInput
 
 @Composable
-fun Modifier.penDrawInteractor(
+fun Modifier.eraseInteractor(
     frame: ActiveFrame,
     drawingInput: DrawingInput,
     onFinishAction: (action: FrameAction) -> Unit,
 ): Modifier {
-    if (drawingInput !is DrawingInput.Pen) return this
+    if (drawingInput !is DrawingInput.Eraser) return this
 
     var newObject by remember(frame) {
         val defaultAttrs = FrameObjectAttributes(
             pathAttributes = FrameObjectAttributes.PathAttributes(emptyList(), drawingInput.radius),
-            colorAttributes = FrameObjectAttributes.ColorAttributes(drawingInput.color),
         )
-        mutableStateOf(PenObject(defaultAttrs))
+        mutableStateOf(EraserObject(defaultAttrs))
     }
 
     val points = remember(frame) { mutableStateListOf<Offset>() }
