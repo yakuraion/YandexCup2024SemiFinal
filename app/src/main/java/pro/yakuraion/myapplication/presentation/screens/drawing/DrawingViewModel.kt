@@ -23,21 +23,21 @@ class DrawingViewModel : ViewModel() {
 
     private val drawingInputType: MutableStateFlow<DrawingInputType> = MutableStateFlow(DrawingInputType.PEN)
 
-    private val radius: MutableStateFlow<Float> = MutableStateFlow(10f)
+    private val strokeWidth: MutableStateFlow<Float> = MutableStateFlow(30f)
 
     private val color: MutableStateFlow<Color> = MutableStateFlow(Color.Red)
 
     private val drawingInput: StateFlow<DrawingInput> = combineStates(
         drawingInputType,
-        radius,
+        strokeWidth,
         color,
-    ) { inputType, radius, color ->
+    ) { inputType, strokeWidth, color ->
         when (inputType) {
-            DrawingInputType.PEN -> DrawingInput.Pen(radius, color)
-            DrawingInputType.ERASER -> DrawingInput.Eraser(radius)
-            DrawingInputType.SHAPE_SQUARE -> DrawingInput.Shape(radius, color, DrawingInput.Shape.Type.SQUARE)
-            DrawingInputType.SHAPE_TRIANGLE -> DrawingInput.Shape(radius, color, DrawingInput.Shape.Type.TRIANGLE)
-            DrawingInputType.SHAPE_CIRCLE -> DrawingInput.Shape(radius, color, DrawingInput.Shape.Type.CIRCLE)
+            DrawingInputType.PEN -> DrawingInput.Pen(strokeWidth, color)
+            DrawingInputType.ERASER -> DrawingInput.Eraser(strokeWidth)
+            DrawingInputType.SHAPE_SQUARE -> DrawingInput.Shape(strokeWidth, color, DrawingInput.Shape.Type.SQUARE)
+            DrawingInputType.SHAPE_TRIANGLE -> DrawingInput.Shape(strokeWidth, color, DrawingInput.Shape.Type.TRIANGLE)
+            DrawingInputType.SHAPE_CIRCLE -> DrawingInput.Shape(strokeWidth, color, DrawingInput.Shape.Type.CIRCLE)
         }
     }
 
@@ -48,6 +48,7 @@ class DrawingViewModel : ViewModel() {
         canGoForward = document.canGoForward(),
         canDeleteFrame = document.previousFrame.mapState { it != null },
         drawingInput = drawingInput,
+        lastStrokeWidth = strokeWidth,
         lastColor = color,
     )
 
@@ -101,6 +102,10 @@ class DrawingViewModel : ViewModel() {
 
     fun onWorkingInstrumentsMenuCircleClick() {
         drawingInputType.update { DrawingInputType.SHAPE_CIRCLE }
+    }
+
+    fun onWorkingLineWeightMenuStrokeWidthChanged(strokeWidth: Float) {
+        this.strokeWidth.update { strokeWidth }
     }
 
     fun onWorkingColorsMenuColorClick(color: Color) {

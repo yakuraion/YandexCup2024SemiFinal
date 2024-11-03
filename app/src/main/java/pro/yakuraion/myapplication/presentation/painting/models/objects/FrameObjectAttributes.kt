@@ -45,12 +45,12 @@ data class FrameObjectAttributes(
     data class PositionAttributes(
         val centerOffset: Offset,
         val size: Size,
-        val radius: Float,
+        val strokeWidth: Float,
     )
 
     data class PathAttributes(
         val path: List<Offset>,
-        val radius: Float,
+        val strokeWidth: Float,
     )
 
     data class ColorAttributes(

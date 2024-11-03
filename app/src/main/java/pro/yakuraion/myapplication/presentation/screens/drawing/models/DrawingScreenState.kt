@@ -14,6 +14,7 @@ sealed class DrawingScreenState {
         val canGoForward: StateFlow<Boolean>,
         val canDeleteFrame: StateFlow<Boolean>,
         val drawingInput: StateFlow<DrawingInput>,
+        val lastStrokeWidth: StateFlow<Float>,
         val lastColor: StateFlow<Color>,
     ) : DrawingScreenState()
 

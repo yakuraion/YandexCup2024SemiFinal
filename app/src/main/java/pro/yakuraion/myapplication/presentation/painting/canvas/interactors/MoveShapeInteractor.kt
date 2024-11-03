@@ -57,7 +57,7 @@ fun Modifier.moveShapeInteractor(
                                 activeObjectAttrs += FrameObjectAttributes.PositionAttributes(
                                     centerOffset = newCenterOffset,
                                     size = activeObjectAttrs.positionAttributes!!.size,
-                                    radius = activeObjectAttrs.positionAttributes!!.radius,
+                                    strokeWidth = activeObjectAttrs.positionAttributes!!.strokeWidth,
                                 )
                             }
                     } while (drag != null)

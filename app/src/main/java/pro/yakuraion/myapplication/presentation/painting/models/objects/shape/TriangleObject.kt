@@ -30,7 +30,7 @@ data class TriangleObject(private val attributes: FrameObjectAttributes) : Frame
             start = bottomLeft,
             end = topCenter,
             cap = StrokeCap.Round,
-            strokeWidth = positionAttrs.radius,
+            strokeWidth = positionAttrs.strokeWidth,
         )
 
         drawLine(
@@ -38,7 +38,7 @@ data class TriangleObject(private val attributes: FrameObjectAttributes) : Frame
             start = topCenter,
             end = bottomRight,
             cap = StrokeCap.Round,
-            strokeWidth = positionAttrs.radius,
+            strokeWidth = positionAttrs.strokeWidth,
         )
 
         drawLine(
@@ -46,7 +46,7 @@ data class TriangleObject(private val attributes: FrameObjectAttributes) : Frame
             start = bottomRight,
             end = bottomLeft,
             cap = StrokeCap.Round,
-            strokeWidth = positionAttrs.radius,
+            strokeWidth = positionAttrs.strokeWidth,
         )
     }
 }

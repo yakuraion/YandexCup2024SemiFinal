@@ -22,7 +22,7 @@ data class EraserObject(private val attributes: FrameObjectAttributes) : FrameOb
             1 -> {
                 drawCircle(
                     color = Color.Black,
-                    radius = pathAttributes.radius,
+                    radius = pathAttributes.strokeWidth / 2,
                     center = pathAttributes.path[0],
                     blendMode = BlendMode.DstOut
                 )
@@ -34,7 +34,7 @@ data class EraserObject(private val attributes: FrameObjectAttributes) : FrameOb
                         color = Color.Black,
                         start = pathAttributes.path[i],
                         end = pathAttributes.path[i + 1],
-                        strokeWidth = pathAttributes.radius,
+                        strokeWidth = pathAttributes.strokeWidth,
                         cap = StrokeCap.Round,
                         blendMode = BlendMode.DstOut
                     )

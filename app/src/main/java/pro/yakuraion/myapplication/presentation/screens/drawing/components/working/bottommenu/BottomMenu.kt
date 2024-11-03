@@ -17,15 +17,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import pro.yakuraion.myapplication.core.applyIf
 
 @Composable
 fun BottomMenu(
     modifier: Modifier = Modifier,
+    withIntrinsicWidth: Boolean = true,
     content: @Composable RowScope.() -> Unit,
 ) {
     Box(
         modifier = modifier
-            .width(IntrinsicSize.Min)
+            .applyIf(withIntrinsicWidth) {
+                width(IntrinsicSize.Min)
+            }
             .height(IntrinsicSize.Min)
             .clickable {}
     ) {

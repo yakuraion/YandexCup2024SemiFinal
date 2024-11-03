@@ -21,7 +21,7 @@ data class CircleObject(private val attributes: FrameObjectAttributes) : FrameOb
             color = colorAttrs.color,
             radius = positionAttrs.size.width / 2,
             center = positionAttrs.centerOffset,
-            style = Stroke(width = positionAttrs.radius),
+            style = Stroke(width = positionAttrs.strokeWidth),
         )
     }
 }

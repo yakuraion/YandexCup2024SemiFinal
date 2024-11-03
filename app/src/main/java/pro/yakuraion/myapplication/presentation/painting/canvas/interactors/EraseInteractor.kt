@@ -29,7 +29,7 @@ fun Modifier.eraseInteractor(
 
     var newObject by remember(frame, drawingInput) {
         val defaultAttrs = FrameObjectAttributes(
-            pathAttributes = FrameObjectAttributes.PathAttributes(emptyList(), drawingInput.radius),
+            pathAttributes = FrameObjectAttributes.PathAttributes(emptyList(), drawingInput.strokeWidth),
         )
         mutableStateOf(EraserObject(defaultAttrs))
     }
@@ -50,7 +50,7 @@ fun Modifier.eraseInteractor(
                                 val attrs = FrameObjectAttributes(
                                     pathAttributes = FrameObjectAttributes.PathAttributes(
                                         path = points,
-                                        radius = drawingInput.radius,
+                                        strokeWidth = drawingInput.strokeWidth,
                                     )
                                 )
                                 newObject += attrs
@@ -58,7 +58,7 @@ fun Modifier.eraseInteractor(
                     } while (drag != null)
                     val finalAttrs = newObject.getAttributes() + FrameObjectAttributes.PathAttributes(
                         path = points.toList(),
-                        radius = drawingInput.radius,
+                        strokeWidth = drawingInput.strokeWidth,
                     )
                     val action = FrameAction.CreateAction(newObject + finalAttrs)
                     onFinishAction(action)

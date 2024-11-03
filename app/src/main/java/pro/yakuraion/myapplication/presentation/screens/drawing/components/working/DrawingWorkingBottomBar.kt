@@ -2,8 +2,11 @@ package pro.yakuraion.myapplication.presentation.screens.drawing.components.work
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,6 +25,7 @@ fun DrawingWorkingBottomBar(
     onPenClick: () -> Unit,
     onEraserClick: () -> Unit,
     onInstrumentsClick: () -> Unit,
+    onLineWeightClick: () -> Unit,
     onColorPickerClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -50,6 +54,21 @@ fun DrawingWorkingBottomBar(
             painter = painterResource(R.drawable.ic_instruments_32),
             onClick = onInstrumentsClick,
             active = isInstrumentsActive,
+            modifier = Modifier.size(40.dp),
+        )
+
+        Spacer(Modifier.width(8.dp))
+
+        VerticalDivider(
+            modifier = Modifier.height(32.dp),
+            color = MaterialTheme.colorScheme.primary,
+        )
+
+        Spacer(Modifier.width(8.dp))
+
+        MyIconButton(
+            painter = painterResource(R.drawable.ic_line_weight_32),
+            onClick = onLineWeightClick,
             modifier = Modifier.size(40.dp),
         )
 

@@ -21,7 +21,7 @@ data class PenObject(private val attributes: FrameObjectAttributes) : FrameObjec
             1 -> {
                 drawCircle(
                     color = colorAttributes.color,
-                    radius = pathAttributes.radius,
+                    radius = pathAttributes.strokeWidth / 2,
                     center = pathAttributes.path[0],
                 )
             }
@@ -32,7 +32,7 @@ data class PenObject(private val attributes: FrameObjectAttributes) : FrameObjec
                         color = colorAttributes.color,
                         start = pathAttributes.path[i],
                         end = pathAttributes.path[i + 1],
-                        strokeWidth = pathAttributes.radius,
+                        strokeWidth = pathAttributes.strokeWidth,
                         cap = StrokeCap.Round,
                     )
                 }

@@ -50,7 +50,7 @@ fun Modifier.shapeDrawInteractor(
                         positionAttributes = FrameObjectAttributes.PositionAttributes(
                             centerOffset = downEventChange.position,
                             size = Size(DEFAULT_SIZE, DEFAULT_SIZE),
-                            radius = drawingInput.radius,
+                            strokeWidth = drawingInput.strokeWidth,
                         ),
                         colorAttributes = FrameObjectAttributes.ColorAttributes(
                             color = drawingInput.color,

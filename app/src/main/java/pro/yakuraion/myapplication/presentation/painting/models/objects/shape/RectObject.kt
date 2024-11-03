@@ -22,7 +22,7 @@ data class RectObject(private val attributes: FrameObjectAttributes) : FrameObje
             color = colorAttrs.color,
             topLeft = topLeft,
             size = positionAttrs.size,
-            style = Stroke(width = positionAttrs.radius),
+            style = Stroke(width = positionAttrs.strokeWidth),
         )
     }
 }
