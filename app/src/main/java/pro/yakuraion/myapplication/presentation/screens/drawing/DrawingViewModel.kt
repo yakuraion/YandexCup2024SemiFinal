@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import pro.yakuraion.myapplication.core.mapState
 import pro.yakuraion.myapplication.presentation.painting.models.Document
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
 import pro.yakuraion.myapplication.presentation.painting.models.framesranges.SingleFramesRange
@@ -21,65 +22,73 @@ class DrawingViewModel : ViewModel() {
 
     private val document: Document = Document(canvasSize)
 
-    private val isPenEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
-
-    private val drawingState: DrawingScreenState.Drawing = DrawingScreenState.Drawing(
+    private val workingState: DrawingScreenState.Working = DrawingScreenState.Working(
         activeFrame = document.activeFrame,
         previousFrame = document.previousFrame,
         canGoBack = document.canGoBack(),
         canGoForward = document.canGoForward(),
-        isPenEnabled = isPenEnabled,
+        canDeleteFrame = document.previousFrame.mapState { it != null },
+        isPenActive = MutableStateFlow(true),
+        isEraserActive = MutableStateFlow(false),
+        isInstrumentsActive = MutableStateFlow(false),
     )
 
-    private val _state: MutableStateFlow<DrawingScreenState> = MutableStateFlow(drawingState)
+    private val _state: MutableStateFlow<DrawingScreenState> = MutableStateFlow(workingState)
     val state: StateFlow<DrawingScreenState> = _state
 
-    fun onAddFrameClick() {
+    fun onWorkingGoBackClick() {
+        document.goBack()
+    }
+
+    fun onWorkingGoForwardClick() {
+        document.goForward()
+    }
+
+    fun onWorkingDeleteFrameClick() {
+        document.deleteLastFrame()
+    }
+
+    fun onWorkingAddNewFrameClick() {
         val framesRange = SingleFramesRange(canvasSize)
         document.addNewFramesRanges(framesRange)
     }
 
-    fun onDeleteFrameClick() {
-        document.deleteLastFrame()
+    fun onWorkingShowFramesClick() {
+
     }
 
-    fun onPreviousActionClick() {
-        document.goBack()
+    fun onWorkingStartPreviewClick() {
+        setPreviewFrame(0)
     }
 
-    fun onNextActionClick() {
-        document.goForward()
+    fun onWorkingNewAction(action: FrameAction) {
+        document.addNewAction(action)
     }
 
-    fun onAddPenMove() {
-        isPenEnabled.update { !it }
+    fun onWorkingPenClick() {
+
     }
 
-    fun onAddRectClick() {
+    fun onWorkingEraserClick() {
+
+    }
+
+    fun onWorkingInstrumentsClick() {
         val obj = RectObject(getDefaultObjectAttrs())
         val action = FrameAction.CreateAction(obj)
         document.addNewAction(action)
     }
 
-    fun onPreviewClick() {
-        setPreviewFrame(0)
-
-    }
-
-    fun onCancelPreviewClick() {
-        _state.update { drawingState }
-    }
-
-    fun onNewAction(action: FrameAction) {
-        document.addNewAction(action)
-    }
-
-    fun onNewPreviewFrameRequest(lastIndex: Long) {
-        if (lastIndex < document.getStaticFramesCount() - 1) {
-            setPreviewFrame(lastIndex + 1)
+    fun onPreviewNewFrameRequest(oldIndex: Long) {
+        if (oldIndex < document.getStaticFramesCount() - 1) {
+            setPreviewFrame(oldIndex + 1)
         } else {
             setPreviewFrame(0)
         }
+    }
+
+    fun onPreviewStopClick() {
+        _state.update { workingState }
     }
 
     private fun setPreviewFrame(index: Long) {

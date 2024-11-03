@@ -1,17 +1,18 @@
 package pro.yakuraion.myapplication.presentation.screens.drawing
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import android.content.res.Configuration
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.androidx.compose.koinViewModel
-import pro.yakuraion.myapplication.presentation.painting.canvas.DrawingCanvas
+import pro.yakuraion.myapplication.presentation.painting.models.ActiveFrame
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
-import pro.yakuraion.myapplication.presentation.screens.drawing.components.bottombar.DrawingBottomBar
-import pro.yakuraion.myapplication.presentation.screens.drawing.components.preview.DrawingPreviewBox
+import pro.yakuraion.myapplication.presentation.screens.drawing.components.preview.DrawingPreviewContent
+import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.DrawingWorkingContent
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
+import pro.yakuraion.myapplication.presentation.ui.theme.MyApplicationTheme
 
 @Composable
 fun DrawingScreen(
@@ -19,109 +20,91 @@ fun DrawingScreen(
 ) {
     DrawingScreen(
         state = viewModel.state.collectAsStateWithLifecycle().value,
-        onAddFrameClick = viewModel::onAddFrameClick,
-        onDeleteFrameClick = viewModel::onDeleteFrameClick,
-        onAddPenMove = viewModel::onAddPenMove,
-        onAddRectClick = viewModel::onAddRectClick,
-        onPreviousActionClick = viewModel::onPreviousActionClick,
-        onNextActionClick = viewModel::onNextActionClick,
-        onPreviewClick = viewModel::onPreviewClick,
-        onCancelPreviewClick = viewModel::onCancelPreviewClick,
-        onNewAction = viewModel::onNewAction,
-        onNewPreviewFrameRequest = viewModel::onNewPreviewFrameRequest,
+        onWorkingGoBackClick = viewModel::onWorkingGoBackClick,
+        onWorkingGoForwardClick = viewModel::onWorkingGoForwardClick,
+        onWorkingDeleteFrameClick = viewModel::onWorkingDeleteFrameClick,
+        onWorkingAddNewFrameClick = viewModel::onWorkingAddNewFrameClick,
+        onWorkingShowFramesClick = viewModel::onWorkingShowFramesClick,
+        onWorkingStartPreviewClick = viewModel::onWorkingStartPreviewClick,
+        onWorkingNewAction = viewModel::onWorkingNewAction,
+        onWorkingPenClick = viewModel::onWorkingPenClick,
+        onWorkingEraserClick = viewModel::onWorkingEraserClick,
+        onWorkingInstrumentsClick = viewModel::onWorkingInstrumentsClick,
+        onPreviewNewFrameRequest = viewModel::onPreviewNewFrameRequest,
+        onPreviewStopClick = viewModel::onPreviewStopClick,
     )
 }
 
 @Composable
 private fun DrawingScreen(
     state: DrawingScreenState,
-    onAddFrameClick: () -> Unit,
-    onDeleteFrameClick: () -> Unit,
-    onAddPenMove: () -> Unit,
-    onAddRectClick: () -> Unit,
-    onPreviousActionClick: () -> Unit,
-    onNextActionClick: () -> Unit,
-    onPreviewClick: () -> Unit,
-    onCancelPreviewClick: () -> Unit,
-    onNewAction: (action: FrameAction) -> Unit,
-    onNewPreviewFrameRequest: (oldIndex: Long) -> Unit,
+    onWorkingGoBackClick: () -> Unit,
+    onWorkingGoForwardClick: () -> Unit,
+    onWorkingDeleteFrameClick: () -> Unit,
+    onWorkingAddNewFrameClick: () -> Unit,
+    onWorkingShowFramesClick: () -> Unit,
+    onWorkingStartPreviewClick: () -> Unit,
+    onWorkingNewAction: (action: FrameAction) -> Unit,
+    onWorkingPenClick: () -> Unit,
+    onWorkingEraserClick: () -> Unit,
+    onWorkingInstrumentsClick: () -> Unit,
+    onPreviewNewFrameRequest: (oldIndex: Long) -> Unit,
+    onPreviewStopClick: () -> Unit,
 ) {
     when (state) {
-        is DrawingScreenState.Drawing -> {
-            Column(modifier = Modifier.fillMaxSize()) {
-                DrawingCanvas(
-                    frame = state.activeFrame.collectAsStateWithLifecycle().value,
-                    previousFrame = state.previousFrame.collectAsStateWithLifecycle().value,
-                    onNewAction = onNewAction,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                )
-                DrawingBottomBar(
-                    deleteFrameEnabled = state.deleteFrameAvailable.collectAsStateWithLifecycle().value,
-                    previousEnabled = state.canGoBack.collectAsStateWithLifecycle().value,
-                    nextEnabled = state.canGoForward.collectAsStateWithLifecycle().value,
-                    onAddFrameClick = onAddFrameClick,
-                    onDeleteFrameClick = onDeleteFrameClick,
-                    onAddPenMove = onAddPenMove,
-                    onAddRectClick = onAddRectClick,
-                    onPreviousActionClick = onPreviousActionClick,
-                    onNextActionClick = onNextActionClick,
-                    onPreviewClick = onPreviewClick,
-                    onCancelPreviewClick = onCancelPreviewClick,
-                )
-            }
+        is DrawingScreenState.Working -> {
+            DrawingWorkingContent(
+                state = state,
+                onGoBackClick = onWorkingGoBackClick,
+                onGoForwardClick = onWorkingGoForwardClick,
+                onDeleteFrameClick = onWorkingDeleteFrameClick,
+                onAddNewFrameClick = onWorkingAddNewFrameClick,
+                onShowFramesClick = onWorkingShowFramesClick,
+                onStartPreviewClick = onWorkingStartPreviewClick,
+                onNewAction = onWorkingNewAction,
+                onPenClick = onWorkingPenClick,
+                onEraserClick = onWorkingEraserClick,
+                onInstrumentsClick = onWorkingInstrumentsClick,
+            )
         }
 
         is DrawingScreenState.Preview -> {
-            Column(modifier = Modifier.fillMaxSize()) {
-                DrawingPreviewBox(
-                    frameIndex = state.frameIndex,
-                    staticFrame = state.staticFrame,
-                    onNewPreviewFrameRequest = onNewPreviewFrameRequest,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                )
-                DrawingBottomBar(
-                    deleteFrameEnabled = false,
-                    previousEnabled = false,
-                    nextEnabled = false,
-                    onAddFrameClick = onAddFrameClick,
-                    onDeleteFrameClick = onDeleteFrameClick,
-                    onAddPenMove = onAddPenMove,
-                    onAddRectClick = onAddRectClick,
-                    onPreviousActionClick = onPreviousActionClick,
-                    onNextActionClick = onNextActionClick,
-                    onPreviewClick = onPreviewClick,
-                    onCancelPreviewClick = onCancelPreviewClick,
-                )
-            }
+            DrawingPreviewContent(
+                state = state,
+                onNewFrameRequest = onPreviewNewFrameRequest,
+                onStopClick = onPreviewStopClick,
+            )
         }
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//private fun Preview() {
-//    MyApplicationTheme {
-//        DrawingScreen(
-//            state = DrawingScreenState.Drawing(
-//                activeFrame = MutableStateFlow(StaticFrame(Size.Zero)),
-//                previousFrame = MutableStateFlow(null),
-//                canGoBack = MutableStateFlow(true),
-//                canGoForward = MutableStateFlow(true),
-//                isPenEnabled = MutableStateFlow(false),
-//            ),
-//            onAddFrameClick = {},
-//            onDeleteFrameClick = {},
-//            onAddPenMove = {},
-//            onAddRectClick = {},
-//            onPreviousActionClick = {},
-//            onNextActionClick = {},
-//            onPreviewClick = {},
-//            onCancelPreviewClick = {},
-//            onNewAction = {},
-//        )
-//    }
-//}
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun Preview() {
+    MyApplicationTheme {
+        DrawingScreen(
+            state = DrawingScreenState.Working(
+                activeFrame = MutableStateFlow(ActiveFrame(Size(1f, 1f))),
+                previousFrame = MutableStateFlow(null),
+                canGoBack = MutableStateFlow(true),
+                canGoForward = MutableStateFlow(true),
+                canDeleteFrame = MutableStateFlow(false),
+                isPenActive = MutableStateFlow(true),
+                isEraserActive = MutableStateFlow(false),
+                isInstrumentsActive = MutableStateFlow(false),
+            ),
+            onWorkingGoBackClick = {},
+            onWorkingGoForwardClick = {},
+            onWorkingDeleteFrameClick = {},
+            onWorkingAddNewFrameClick = {},
+            onWorkingShowFramesClick = {},
+            onWorkingStartPreviewClick = {},
+            onWorkingNewAction = {},
+            onWorkingPenClick = {},
+            onWorkingEraserClick = {},
+            onWorkingInstrumentsClick = {},
+            onPreviewNewFrameRequest = {},
+            onPreviewStopClick = {},
+        )
+    }
+}

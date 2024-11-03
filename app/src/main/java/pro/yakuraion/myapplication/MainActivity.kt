@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import pro.yakuraion.myapplication.presentation.screens.drawing.DrawingScreen
+import pro.yakuraion.myapplication.presentation.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -12,7 +13,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            DrawingScreen()
+            MyApplicationTheme {
+                DrawingScreen()
+            }
         }
     }
 }

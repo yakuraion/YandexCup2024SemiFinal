@@ -14,7 +14,7 @@ import pro.yakuraion.myapplication.presentation.painting.models.ActiveFrame
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
 
 @Composable
-fun DrawingWorkingCanvas(
+fun PaintingCurrentCanvas(
     frame: ActiveFrame,
     onNewAction: (action: FrameAction) -> Unit,
     modifier: Modifier = Modifier,

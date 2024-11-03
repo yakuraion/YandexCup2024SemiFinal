@@ -7,7 +7,7 @@ import androidx.compose.ui.draw.alpha
 import pro.yakuraion.myapplication.presentation.painting.models.StaticFrame
 
 @Composable
-fun DrawingPreviousCanvas(
+fun PaintingPreviousCanvas(
     frame: StaticFrame,
     modifier: Modifier = Modifier,
 ) {
