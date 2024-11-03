@@ -1,6 +1,5 @@
-package pro.yakuraion.myapplication.presentation.painting.models.frames
+package pro.yakuraion.myapplication.presentation.painting.models
 
-import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
 import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObject
 
 data class FrameObjectLifespan(
@@ -11,11 +10,10 @@ data class FrameObjectLifespan(
     val obj: FrameObject
 
     init {
-        val shape = createAction.shape
-        var attrs = createAction.attrs
+        var obj = createAction.obj
         for (modifyAction in modifyActions) {
-            attrs = modifyAction.modify(attrs)
+            obj += modifyAction.newAttrs
         }
-        obj = FrameObject(shape, attrs)
+        this.obj = obj
     }
 }

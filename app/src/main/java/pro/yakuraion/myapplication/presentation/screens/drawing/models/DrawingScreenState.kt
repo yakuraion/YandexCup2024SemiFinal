@@ -2,8 +2,8 @@ package pro.yakuraion.myapplication.presentation.screens.drawing.models
 
 import kotlinx.coroutines.flow.StateFlow
 import pro.yakuraion.myapplication.core.mapState
-import pro.yakuraion.myapplication.presentation.painting.models.frames.ActiveFrame
-import pro.yakuraion.myapplication.presentation.painting.models.frames.StaticFrame
+import pro.yakuraion.myapplication.presentation.painting.models.ActiveFrame
+import pro.yakuraion.myapplication.presentation.painting.models.StaticFrame
 
 sealed class DrawingScreenState {
 

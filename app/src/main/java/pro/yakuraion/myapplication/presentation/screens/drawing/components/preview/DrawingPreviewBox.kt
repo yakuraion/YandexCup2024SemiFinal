@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
-import pro.yakuraion.myapplication.presentation.painting.models.frames.StaticFrame
+import pro.yakuraion.myapplication.presentation.painting.models.StaticFrame
 
 @Composable
 fun DrawingPreviewBox(

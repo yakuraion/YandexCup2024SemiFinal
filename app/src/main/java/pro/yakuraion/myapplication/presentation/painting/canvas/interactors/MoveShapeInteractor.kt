@@ -1,4 +1,4 @@
-package pro.yakuraion.myapplication.presentation.painting.canvas.pointerinputs
+package pro.yakuraion.myapplication.presentation.painting.canvas.interactors
 
 import androidx.compose.foundation.gestures.awaitDragOrCancellation
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -11,21 +11,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
-import pro.yakuraion.myapplication.presentation.painting.models.actions.MoveAction
-import pro.yakuraion.myapplication.presentation.painting.models.frames.ActiveFrame
+import pro.yakuraion.myapplication.presentation.painting.models.ActiveFrame
+import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
+import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectAttributes
 import pro.yakuraion.myapplication.presentation.painting.utils.DrawingCalculationsUtils
 
 @Composable
-fun Modifier.moveShapeDetector(
+fun Modifier.moveShapeInteractor(
+    active: Boolean,
     frame: ActiveFrame,
     isAcquired: Boolean,
     onAcquireRequest: () -> Unit,
-    onFinishAction: (action: MoveAction) -> Unit,
+    onFinishAction: (action: FrameAction) -> Unit,
 ): Modifier {
-    val activeObject = frame.activeObject ?: return this
-    var activeObjectAttrs by remember(frame) { mutableStateOf(frame.activeObject.attrs) }
+    if (!active) return this
 
-    val modifier = this
+    val activeObject = frame.activeObject ?: return this
+
+    var activeObjectAttrs by remember(frame) { mutableStateOf(activeObject.getAttributes()) }
+
+    if (activeObjectAttrs.positionAttributes == null || activeObjectAttrs.colorAttributes == null) return this
+
+    return this
         .pointerInput(frame) {
             awaitPointerEventScope {
                 while (true) {
@@ -33,23 +40,26 @@ fun Modifier.moveShapeDetector(
 
                     val isObjectAffected = DrawingCalculationsUtils.isGestureEventInside(
                         gestureOffset = downEventChange.position,
-                        objectSize = activeObjectAttrs.size,
-                        objectCenterOffset = activeObjectAttrs.centerOffset,
+                        objectSize = activeObjectAttrs.positionAttributes!!.size,
+                        objectCenterOffset = activeObjectAttrs.positionAttributes!!.centerOffset,
                     )
                     if (!isObjectAffected) continue
                     onAcquireRequest()
 
-                    var newCenterOffset = activeObjectAttrs.centerOffset
+                    var newCenterOffset = activeObjectAttrs.positionAttributes!!.centerOffset
                     var drag: PointerInputChange?
                     do {
                         drag = awaitDragOrCancellation(downEventChange.id)
                             ?.also { notNullDrag ->
                                 val delta = (notNullDrag.position - notNullDrag.previousPosition)
                                 newCenterOffset += delta
-                                activeObjectAttrs = activeObjectAttrs.copy(centerOffset = newCenterOffset)
+                                activeObjectAttrs += FrameObjectAttributes.PositionAttributes(
+                                    centerOffset = newCenterOffset,
+                                    size = activeObjectAttrs.positionAttributes!!.size
+                                )
                             }
                     } while (drag != null)
-                    val action = MoveAction(newCenterOffset)
+                    val action = FrameAction.ModifyAction(activeObjectAttrs)
                     onFinishAction(action)
                 }
             }
@@ -58,10 +68,9 @@ fun Modifier.moveShapeDetector(
             drawContent()
 
             if (isAcquired) {
-                with(activeObject.shape) {
+                with(activeObject) {
                     draw(activeObjectAttrs)
                 }
             }
         }
-    return modifier
 }

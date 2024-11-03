@@ -2,14 +2,11 @@ package pro.yakuraion.myapplication.presentation.painting.models.objects
 
 import androidx.compose.ui.graphics.drawscope.DrawScope
 
-data class FrameObject(
-    val shape: FrameObjectShape,
-    val attrs: FrameObjectAttrs,
-) {
+interface FrameObject {
 
-    fun DrawScope.draw() {
-        with(shape) {
-            draw(attrs)
-        }
-    }
+    operator fun plus(attributes: FrameObjectAttributes): FrameObject
+
+    fun getAttributes(): FrameObjectAttributes
+
+    fun DrawScope.draw(attributes: FrameObjectAttributes = getAttributes())
 }

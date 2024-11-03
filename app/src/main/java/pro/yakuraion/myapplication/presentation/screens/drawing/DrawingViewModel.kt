@@ -8,12 +8,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import pro.yakuraion.myapplication.presentation.painting.models.Document
-import pro.yakuraion.myapplication.presentation.painting.models.actions.CreateShapeAction
-import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
+import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
 import pro.yakuraion.myapplication.presentation.painting.models.framesranges.SingleFramesRange
-import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectAttrs
-import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectShape
-import pro.yakuraion.myapplication.presentation.painting.models.objects.RectObjectShape
+import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectAttributes
+import pro.yakuraion.myapplication.presentation.painting.models.objects.RectObject
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
 
 class DrawingViewModel : ViewModel() {
@@ -58,7 +56,9 @@ class DrawingViewModel : ViewModel() {
     }
 
     fun onAddRectClick() {
-        document.addNewAction(getDefaultCreateShapeAction(RectObjectShape))
+        val obj = RectObject(getDefaultObjectAttrs())
+        val action = FrameAction.CreateAction(obj)
+        document.addNewAction(action)
     }
 
     fun onPreviewClick() {
@@ -86,12 +86,13 @@ class DrawingViewModel : ViewModel() {
         _state.update { DrawingScreenState.Preview(index, document.getStaticFrame(index)) }
     }
 
-    private fun getDefaultCreateShapeAction(shape: FrameObjectShape): CreateShapeAction {
-        return CreateShapeAction(
-            shape = shape,
-            attrs = FrameObjectAttrs(
-                size = Size(DEFAULT_CREATE_WIDTH, DEFAULT_CREATE_HEIGHT),
+    private fun getDefaultObjectAttrs(): FrameObjectAttributes {
+        return FrameObjectAttributes(
+            positionAttributes = FrameObjectAttributes.PositionAttributes(
                 centerOffset = Offset(canvasSize.width / 2, canvasSize.height / 2),
+                size = Size(DEFAULT_CREATE_WIDTH, DEFAULT_CREATE_HEIGHT),
+            ),
+            colorAttributes = FrameObjectAttributes.ColorAttributes(
                 color = Color.Red,
             ),
         )

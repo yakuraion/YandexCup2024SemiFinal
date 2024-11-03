@@ -4,7 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import pro.yakuraion.myapplication.presentation.painting.models.frames.StaticFrame
+import pro.yakuraion.myapplication.presentation.painting.models.StaticFrame
 
 @Composable
 fun DrawingPreviousCanvas(

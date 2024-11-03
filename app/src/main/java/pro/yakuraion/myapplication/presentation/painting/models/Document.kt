@@ -5,9 +5,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import pro.yakuraion.myapplication.core.mapState
-import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
-import pro.yakuraion.myapplication.presentation.painting.models.frames.ActiveFrame
-import pro.yakuraion.myapplication.presentation.painting.models.frames.StaticFrame
 import pro.yakuraion.myapplication.presentation.painting.models.framesranges.FramesRange
 import pro.yakuraion.myapplication.presentation.painting.models.framesranges.SingleFramesRange
 

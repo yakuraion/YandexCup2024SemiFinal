@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import pro.yakuraion.myapplication.presentation.painting.canvas.DrawingCanvas
-import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
+import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.bottombar.DrawingBottomBar
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.preview.DrawingPreviewBox
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState

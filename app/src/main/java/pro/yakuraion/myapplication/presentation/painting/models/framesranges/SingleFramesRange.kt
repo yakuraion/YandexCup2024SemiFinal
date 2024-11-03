@@ -1,9 +1,9 @@
 package pro.yakuraion.myapplication.presentation.painting.models.framesranges
 
 import androidx.compose.ui.geometry.Size
-import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
-import pro.yakuraion.myapplication.presentation.painting.models.frames.ActiveFrame
-import pro.yakuraion.myapplication.presentation.painting.models.frames.StaticFrame
+import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
+import pro.yakuraion.myapplication.presentation.painting.models.ActiveFrame
+import pro.yakuraion.myapplication.presentation.painting.models.StaticFrame
 
 data class SingleFramesRange(
     val size: Size,

@@ -1,4 +1,4 @@
-package pro.yakuraion.myapplication.presentation.painting.models.frames
+package pro.yakuraion.myapplication.presentation.painting.models
 
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Canvas
@@ -6,7 +6,6 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
-import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
 import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObject
 
 data class ActiveFrame(
