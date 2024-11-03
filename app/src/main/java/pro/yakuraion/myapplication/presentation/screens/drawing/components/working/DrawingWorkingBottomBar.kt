@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.myapplication.R
+import pro.yakuraion.myapplication.presentation.components.ColorButton
 import pro.yakuraion.myapplication.presentation.components.MyIconButton
 
 @Composable
@@ -16,9 +18,11 @@ fun DrawingWorkingBottomBar(
     isPenActive: Boolean,
     isEraserActive: Boolean,
     isInstrumentsActive: Boolean,
+    currentColor: Color,
     onPenClick: () -> Unit,
     onEraserClick: () -> Unit,
     onInstrumentsClick: () -> Unit,
+    onColorPickerClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -47,6 +51,14 @@ fun DrawingWorkingBottomBar(
             onClick = onInstrumentsClick,
             active = isInstrumentsActive,
             modifier = Modifier.size(40.dp),
+        )
+
+        Spacer(Modifier.width(8.dp))
+
+        ColorButton(
+            color = currentColor,
+            onClick = onColorPickerClick,
+            withBorder = true,
         )
     }
 }

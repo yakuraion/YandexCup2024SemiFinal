@@ -34,6 +34,7 @@ fun DrawingScreen(
         onWorkingInstrumentsMenuSquareClick = viewModel::onWorkingInstrumentsMenuSquareClick,
         onWorkingInstrumentsMenuTriangleClick = viewModel::onWorkingInstrumentsMenuTriangleClick,
         onWorkingInstrumentsMenuCircleClick = viewModel::onWorkingInstrumentsMenuCircleClick,
+        onWorkingColorsMenuColorClick = viewModel::onWorkingColorsMenuColorClick,
         onPreviewNewFrameRequest = viewModel::onPreviewNewFrameRequest,
         onPreviewStopClick = viewModel::onPreviewStopClick,
     )
@@ -54,6 +55,7 @@ private fun DrawingScreen(
     onWorkingInstrumentsMenuSquareClick: () -> Unit,
     onWorkingInstrumentsMenuTriangleClick: () -> Unit,
     onWorkingInstrumentsMenuCircleClick: () -> Unit,
+    onWorkingColorsMenuColorClick: (Color) -> Unit,
     onPreviewNewFrameRequest: (oldIndex: Long) -> Unit,
     onPreviewStopClick: () -> Unit,
 ) {
@@ -73,6 +75,7 @@ private fun DrawingScreen(
                 onInstrumentsMenuSquareClick = onWorkingInstrumentsMenuSquareClick,
                 onInstrumentsMenuTriangleClick = onWorkingInstrumentsMenuTriangleClick,
                 onInstrumentsMenuCircleClick = onWorkingInstrumentsMenuCircleClick,
+                onColorsMenuColorClick = onWorkingColorsMenuColorClick,
             )
         }
 
@@ -97,7 +100,8 @@ private fun Preview() {
                 canGoBack = MutableStateFlow(true),
                 canGoForward = MutableStateFlow(true),
                 canDeleteFrame = MutableStateFlow(false),
-                drawingInput = MutableStateFlow(DrawingInput.Pen(10f, Color.Blue))
+                drawingInput = MutableStateFlow(DrawingInput.Pen(10f, Color.Blue)),
+                lastColor = MutableStateFlow(Color.Blue),
             ),
             onWorkingGoBackClick = {},
             onWorkingGoForwardClick = {},
@@ -111,6 +115,7 @@ private fun Preview() {
             onWorkingInstrumentsMenuSquareClick = {},
             onWorkingInstrumentsMenuTriangleClick = {},
             onWorkingInstrumentsMenuCircleClick = {},
+            onWorkingColorsMenuColorClick = {},
             onPreviewNewFrameRequest = {},
             onPreviewStopClick = {},
         )

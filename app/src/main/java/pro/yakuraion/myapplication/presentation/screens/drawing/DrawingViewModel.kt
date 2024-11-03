@@ -48,6 +48,7 @@ class DrawingViewModel : ViewModel() {
         canGoForward = document.canGoForward(),
         canDeleteFrame = document.previousFrame.mapState { it != null },
         drawingInput = drawingInput,
+        lastColor = color,
     )
 
     private val _state: MutableStateFlow<DrawingScreenState> = MutableStateFlow(workingState)
@@ -100,6 +101,10 @@ class DrawingViewModel : ViewModel() {
 
     fun onWorkingInstrumentsMenuCircleClick() {
         drawingInputType.update { DrawingInputType.SHAPE_CIRCLE }
+    }
+
+    fun onWorkingColorsMenuColorClick(color: Color) {
+        this.color.update { color }
     }
 
     fun onPreviewNewFrameRequest(oldIndex: Long) {
