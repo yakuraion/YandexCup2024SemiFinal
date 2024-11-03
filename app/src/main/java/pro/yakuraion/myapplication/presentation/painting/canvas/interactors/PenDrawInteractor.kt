@@ -27,7 +27,7 @@ fun Modifier.penDrawInteractor(
 ): Modifier {
     if (drawingInput !is DrawingInput.Pen) return this
 
-    var newObject by remember(frame) {
+    var newObject by remember(frame, drawingInput) {
         val defaultAttrs = FrameObjectAttributes(
             pathAttributes = FrameObjectAttributes.PathAttributes(emptyList(), drawingInput.radius),
             colorAttributes = FrameObjectAttributes.ColorAttributes(drawingInput.color),
@@ -35,10 +35,10 @@ fun Modifier.penDrawInteractor(
         mutableStateOf(PenObject(defaultAttrs))
     }
 
-    val points = remember(frame) { mutableStateListOf<Offset>() }
+    val points = remember(frame, drawingInput) { mutableStateListOf<Offset>() }
 
     val modifier = this
-        .pointerInput(frame) {
+        .pointerInput(frame, drawingInput) {
             awaitPointerEventScope {
                 while (true) {
                     val downEventChange = awaitFirstDown()

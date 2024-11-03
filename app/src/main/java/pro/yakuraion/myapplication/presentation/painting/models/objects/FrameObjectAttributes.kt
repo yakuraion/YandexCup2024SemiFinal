@@ -45,6 +45,7 @@ data class FrameObjectAttributes(
     data class PositionAttributes(
         val centerOffset: Offset,
         val size: Size,
+        val radius: Float,
     )
 
     data class PathAttributes(

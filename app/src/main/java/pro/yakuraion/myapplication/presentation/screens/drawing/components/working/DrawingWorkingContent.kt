@@ -1,11 +1,16 @@
 package pro.yakuraion.myapplication.presentation.screens.drawing.components.working
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import pro.yakuraion.myapplication.presentation.painting.canvas.PaintingCanvas
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.DrawingContentScaffold
+import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.bottommenu.InstrumentsBottomMenu
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingInput
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
 
@@ -21,9 +26,13 @@ fun DrawingWorkingContent(
     onNewAction: (action: FrameAction) -> Unit,
     onPenClick: () -> Unit,
     onEraserClick: () -> Unit,
-    onInstrumentsClick: () -> Unit,
+    onInstrumentsMenuSquareClick: () -> Unit,
+    onInstrumentsMenuTriangleClick: () -> Unit,
+    onInstrumentsMenuCircleClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var isInstrumentsBottomMenuVisible by remember { mutableStateOf(false) }
+
     DrawingContentScaffold(
         topBar = {
             DrawingWorkingTopBar(
@@ -51,11 +60,34 @@ fun DrawingWorkingContent(
             DrawingWorkingBottomBar(
                 isPenActive = drawingInput is DrawingInput.Pen,
                 isEraserActive = drawingInput is DrawingInput.Eraser,
-                isInstrumentsActive = false,
+                isInstrumentsActive = drawingInput is DrawingInput.Shape,
                 onPenClick = onPenClick,
                 onEraserClick = onEraserClick,
-                onInstrumentsClick = onInstrumentsClick,
+                onInstrumentsClick = { isInstrumentsBottomMenuVisible = !isInstrumentsBottomMenuVisible },
             )
+        },
+        bottomBarMenu = {
+            if (isInstrumentsBottomMenuVisible) {
+                val drawingInput = state.drawingInput.collectAsStateWithLifecycle().value
+                val shapeType = drawingInput as? DrawingInput.Shape
+                InstrumentsBottomMenu(
+                    isSquareActive = shapeType?.type == DrawingInput.Shape.Type.SQUARE,
+                    isTriangleActive = shapeType?.type == DrawingInput.Shape.Type.TRIANGLE,
+                    isCircleActive = shapeType?.type == DrawingInput.Shape.Type.CIRCLE,
+                    onSquareClick = {
+                        isInstrumentsBottomMenuVisible = false
+                        onInstrumentsMenuSquareClick()
+                    },
+                    onTriangleClick = {
+                        isInstrumentsBottomMenuVisible = false
+                        onInstrumentsMenuTriangleClick()
+                    },
+                    onCircleClick = {
+                        isInstrumentsBottomMenuVisible = false
+                        onInstrumentsMenuCircleClick()
+                    }
+                )
+            }
         },
         modifier = modifier,
     )

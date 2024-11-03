@@ -27,17 +27,17 @@ fun Modifier.eraseInteractor(
 ): Modifier {
     if (drawingInput !is DrawingInput.Eraser) return this
 
-    var newObject by remember(frame) {
+    var newObject by remember(frame, drawingInput) {
         val defaultAttrs = FrameObjectAttributes(
             pathAttributes = FrameObjectAttributes.PathAttributes(emptyList(), drawingInput.radius),
         )
         mutableStateOf(EraserObject(defaultAttrs))
     }
 
-    val points = remember(frame) { mutableStateListOf<Offset>() }
+    val points = remember(frame, drawingInput) { mutableStateListOf<Offset>() }
 
     val modifier = this
-        .pointerInput(frame) {
+        .pointerInput(frame, drawingInput) {
             awaitPointerEventScope {
                 while (true) {
                     val downEventChange = awaitFirstDown()

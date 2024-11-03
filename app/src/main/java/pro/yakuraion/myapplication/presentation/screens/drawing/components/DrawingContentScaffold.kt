@@ -26,54 +26,65 @@ fun DrawingContentScaffold(
     topBar: @Composable () -> Unit,
     canvas: @Composable () -> Unit,
     bottomBar: @Composable () -> Unit,
+    bottomBarMenu: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
+    Box(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .padding(vertical = 12.dp)
             .systemBarsPadding()
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp)
-                .padding(horizontal = 16.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            topBar()
+        Column {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                topBar()
+            }
+
+            Spacer(Modifier.height(28.dp))
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(20.dp)),
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.canvas_bg),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                )
+
+                canvas()
+            }
+
+            Spacer(Modifier.height(18.dp))
+
+            Box(
+                modifier = Modifier
+                    .height(40.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                bottomBar()
+            }
         }
 
-        Spacer(Modifier.height(28.dp))
-
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(20.dp)),
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 64.dp)
         ) {
-            Image(
-                painter = painterResource(R.drawable.canvas_bg),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop,
-            )
-
-            canvas()
-        }
-
-        Spacer(Modifier.height(18.dp))
-
-        Box(
-            modifier = Modifier
-                .height(40.dp)
-                .align(Alignment.CenterHorizontally)
-                .padding(horizontal = 16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            bottomBar()
+            bottomBarMenu()
         }
     }
 }

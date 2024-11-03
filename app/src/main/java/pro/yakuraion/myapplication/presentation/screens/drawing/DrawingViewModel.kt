@@ -1,6 +1,5 @@
 package pro.yakuraion.myapplication.presentation.screens.drawing
 
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -12,8 +11,6 @@ import pro.yakuraion.myapplication.core.mapState
 import pro.yakuraion.myapplication.presentation.painting.models.Document
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
 import pro.yakuraion.myapplication.presentation.painting.models.framesranges.SingleFramesRange
-import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectAttributes
-import pro.yakuraion.myapplication.presentation.painting.models.objects.RectObject
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingInput
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
 
@@ -38,6 +35,9 @@ class DrawingViewModel : ViewModel() {
         when (inputType) {
             DrawingInputType.PEN -> DrawingInput.Pen(radius, color)
             DrawingInputType.ERASER -> DrawingInput.Eraser(radius)
+            DrawingInputType.SHAPE_SQUARE -> DrawingInput.Shape(radius, color, DrawingInput.Shape.Type.SQUARE)
+            DrawingInputType.SHAPE_TRIANGLE -> DrawingInput.Shape(radius, color, DrawingInput.Shape.Type.TRIANGLE)
+            DrawingInputType.SHAPE_CIRCLE -> DrawingInput.Shape(radius, color, DrawingInput.Shape.Type.CIRCLE)
         }
     }
 
@@ -90,10 +90,16 @@ class DrawingViewModel : ViewModel() {
         drawingInputType.update { DrawingInputType.ERASER }
     }
 
-    fun onWorkingInstrumentsClick() {
-        val obj = RectObject(getDefaultObjectAttrs())
-        val action = FrameAction.CreateAction(obj)
-        document.addNewAction(action)
+    fun onWorkingInstrumentsMenuSquareClick() {
+        drawingInputType.update { DrawingInputType.SHAPE_SQUARE }
+    }
+
+    fun onWorkingInstrumentsMenuTriangleClick() {
+        drawingInputType.update { DrawingInputType.SHAPE_TRIANGLE }
+    }
+
+    fun onWorkingInstrumentsMenuCircleClick() {
+        drawingInputType.update { DrawingInputType.SHAPE_CIRCLE }
     }
 
     fun onPreviewNewFrameRequest(oldIndex: Long) {
@@ -112,25 +118,7 @@ class DrawingViewModel : ViewModel() {
         _state.update { DrawingScreenState.Preview(index, document.getStaticFrame(index)) }
     }
 
-    private fun getDefaultObjectAttrs(): FrameObjectAttributes {
-        return FrameObjectAttributes(
-            positionAttributes = FrameObjectAttributes.PositionAttributes(
-                centerOffset = Offset(canvasSize.width / 2, canvasSize.height / 2),
-                size = Size(DEFAULT_CREATE_WIDTH, DEFAULT_CREATE_HEIGHT),
-            ),
-            colorAttributes = FrameObjectAttributes.ColorAttributes(
-                color = Color.Red,
-            ),
-        )
-    }
-
     enum class DrawingInputType {
-        PEN, ERASER
-    }
-
-    companion object {
-
-        private const val DEFAULT_CREATE_WIDTH = 300f
-        private const val DEFAULT_CREATE_HEIGHT = 300f
+        PEN, ERASER, SHAPE_SQUARE, SHAPE_TRIANGLE, SHAPE_CIRCLE
     }
 }

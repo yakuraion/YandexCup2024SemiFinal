@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import kotlinx.coroutines.delay
 import pro.yakuraion.myapplication.R
+import pro.yakuraion.myapplication.presentation.components.MyIconButton
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.DrawingContentScaffold
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
-import pro.yakuraion.myapplication.presentation.components.MyIconButton
 
 @Composable
 fun DrawingPreviewContent(
@@ -33,6 +33,7 @@ fun DrawingPreviewContent(
             }
         },
         bottomBar = {},
+        bottomBarMenu = {},
         modifier = modifier,
     )
 

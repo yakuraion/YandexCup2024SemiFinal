@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import pro.yakuraion.myapplication.presentation.painting.canvas.interactors.eraseInteractor
 import pro.yakuraion.myapplication.presentation.painting.canvas.interactors.moveShapeInteractor
 import pro.yakuraion.myapplication.presentation.painting.canvas.interactors.penDrawInteractor
+import pro.yakuraion.myapplication.presentation.painting.canvas.interactors.shapeDrawInteractor
 import pro.yakuraion.myapplication.presentation.painting.models.ActiveFrame
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingInput
@@ -44,6 +45,11 @@ fun PaintingCurrentCanvas(
                 onFinishAction = onNewAction,
             )
             .eraseInteractor(
+                frame = frame,
+                drawingInput = drawingInput,
+                onFinishAction = onNewAction,
+            )
+            .shapeDrawInteractor(
                 frame = frame,
                 drawingInput = drawingInput,
                 onFinishAction = onNewAction,

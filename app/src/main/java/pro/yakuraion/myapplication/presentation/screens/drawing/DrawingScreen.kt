@@ -31,7 +31,9 @@ fun DrawingScreen(
         onWorkingNewAction = viewModel::onWorkingNewAction,
         onWorkingPenClick = viewModel::onWorkingPenClick,
         onWorkingEraserClick = viewModel::onWorkingEraserClick,
-        onWorkingInstrumentsClick = viewModel::onWorkingInstrumentsClick,
+        onWorkingInstrumentsMenuSquareClick = viewModel::onWorkingInstrumentsMenuSquareClick,
+        onWorkingInstrumentsMenuTriangleClick = viewModel::onWorkingInstrumentsMenuTriangleClick,
+        onWorkingInstrumentsMenuCircleClick = viewModel::onWorkingInstrumentsMenuCircleClick,
         onPreviewNewFrameRequest = viewModel::onPreviewNewFrameRequest,
         onPreviewStopClick = viewModel::onPreviewStopClick,
     )
@@ -49,7 +51,9 @@ private fun DrawingScreen(
     onWorkingNewAction: (action: FrameAction) -> Unit,
     onWorkingPenClick: () -> Unit,
     onWorkingEraserClick: () -> Unit,
-    onWorkingInstrumentsClick: () -> Unit,
+    onWorkingInstrumentsMenuSquareClick: () -> Unit,
+    onWorkingInstrumentsMenuTriangleClick: () -> Unit,
+    onWorkingInstrumentsMenuCircleClick: () -> Unit,
     onPreviewNewFrameRequest: (oldIndex: Long) -> Unit,
     onPreviewStopClick: () -> Unit,
 ) {
@@ -66,7 +70,9 @@ private fun DrawingScreen(
                 onNewAction = onWorkingNewAction,
                 onPenClick = onWorkingPenClick,
                 onEraserClick = onWorkingEraserClick,
-                onInstrumentsClick = onWorkingInstrumentsClick,
+                onInstrumentsMenuSquareClick = onWorkingInstrumentsMenuSquareClick,
+                onInstrumentsMenuTriangleClick = onWorkingInstrumentsMenuTriangleClick,
+                onInstrumentsMenuCircleClick = onWorkingInstrumentsMenuCircleClick,
             )
         }
 
@@ -102,7 +108,9 @@ private fun Preview() {
             onWorkingNewAction = {},
             onWorkingPenClick = {},
             onWorkingEraserClick = {},
-            onWorkingInstrumentsClick = {},
+            onWorkingInstrumentsMenuSquareClick = {},
+            onWorkingInstrumentsMenuTriangleClick = {},
+            onWorkingInstrumentsMenuCircleClick = {},
             onPreviewNewFrameRequest = {},
             onPreviewStopClick = {},
         )

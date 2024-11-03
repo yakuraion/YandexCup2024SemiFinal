@@ -15,4 +15,15 @@ sealed class DrawingInput(
     data class Eraser(
         override val radius: Float,
     ) : DrawingInput(radius, null)
+
+    data class Shape(
+        override val radius: Float,
+        override val color: Color,
+        val type: Type,
+    ) : DrawingInput(radius, color) {
+
+        enum class Type {
+            SQUARE, TRIANGLE, CIRCLE
+        }
+    }
 }

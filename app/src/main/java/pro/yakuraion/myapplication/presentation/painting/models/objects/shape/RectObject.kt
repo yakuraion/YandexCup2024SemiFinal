@@ -1,7 +1,10 @@
-package pro.yakuraion.myapplication.presentation.painting.models.objects
+package pro.yakuraion.myapplication.presentation.painting.models.objects.shape
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Stroke
+import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObject
+import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectAttributes
 
 data class RectObject(private val attributes: FrameObjectAttributes) : FrameObject {
 
@@ -19,6 +22,7 @@ data class RectObject(private val attributes: FrameObjectAttributes) : FrameObje
             color = colorAttrs.color,
             topLeft = topLeft,
             size = positionAttrs.size,
+            style = Stroke(width = positionAttrs.radius),
         )
     }
 }
