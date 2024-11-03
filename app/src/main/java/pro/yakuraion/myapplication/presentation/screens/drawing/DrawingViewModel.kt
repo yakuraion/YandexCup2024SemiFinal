@@ -15,7 +15,6 @@ import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObj
 import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectShape
 import pro.yakuraion.myapplication.presentation.painting.models.objects.RectObjectShape
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
-import timber.log.Timber
 
 class DrawingViewModel : ViewModel() {
 
@@ -76,7 +75,6 @@ class DrawingViewModel : ViewModel() {
     }
 
     fun onNewPreviewFrameRequest(lastIndex: Long) {
-        Timber.tag("meme").d("onNewPreviewFrameRequest lastIndex = $lastIndex")
         if (lastIndex < document.getStaticFramesCount() - 1) {
             setPreviewFrame(lastIndex + 1)
         } else {
@@ -85,7 +83,6 @@ class DrawingViewModel : ViewModel() {
     }
 
     private fun setPreviewFrame(index: Long) {
-        Timber.tag("meme").d("setPreviewFrame index = $index")
         _state.update { DrawingScreenState.Preview(index, document.getStaticFrame(index)) }
     }
 

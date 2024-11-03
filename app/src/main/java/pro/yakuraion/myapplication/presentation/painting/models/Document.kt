@@ -1,32 +1,21 @@
 package pro.yakuraion.myapplication.presentation.painting.models
 
 import androidx.compose.ui.geometry.Size
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import pro.yakuraion.myapplication.core.mapState
 import pro.yakuraion.myapplication.presentation.painting.models.actions.FrameAction
 import pro.yakuraion.myapplication.presentation.painting.models.frames.ActiveFrame
 import pro.yakuraion.myapplication.presentation.painting.models.frames.StaticFrame
 import pro.yakuraion.myapplication.presentation.painting.models.framesranges.FramesRange
 import pro.yakuraion.myapplication.presentation.painting.models.framesranges.SingleFramesRange
-import timber.log.Timber
 
 class Document(size: Size) {
 
     private val framesRanges: MutableStateFlow<List<FramesRange>> = MutableStateFlow(
         listOf(SingleFramesRange(size))
     )
-
-    init {
-        GlobalScope.launch {
-            framesRanges.collect {
-                Timber.tag("keke").d("frameRanges = $it")
-            }
-        }
-    }
 
     val activeFrame: StateFlow<ActiveFrame> = framesRanges.mapState { it.last().getActiveFrame() }
 
