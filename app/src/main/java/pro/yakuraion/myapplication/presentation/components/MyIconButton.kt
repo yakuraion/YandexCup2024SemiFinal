@@ -1,4 +1,4 @@
-package pro.yakuraion.myapplication.presentation.ui.components
+package pro.yakuraion.myapplication.presentation.components
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton

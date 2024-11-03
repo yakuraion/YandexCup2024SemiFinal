@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import pro.yakuraion.myapplication.presentation.screens.drawing.DrawingScreen
-import pro.yakuraion.myapplication.presentation.ui.theme.MyApplicationTheme
+import pro.yakuraion.myapplication.presentation.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
 

@@ -1,4 +1,4 @@
-package pro.yakuraion.myapplication.presentation.ui.theme
+package pro.yakuraion.myapplication.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

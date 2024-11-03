@@ -12,7 +12,7 @@ import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.preview.DrawingPreviewContent
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.DrawingWorkingContent
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
-import pro.yakuraion.myapplication.presentation.ui.theme.MyApplicationTheme
+import pro.yakuraion.myapplication.presentation.theme.MyApplicationTheme
 
 @Composable
 fun DrawingScreen(

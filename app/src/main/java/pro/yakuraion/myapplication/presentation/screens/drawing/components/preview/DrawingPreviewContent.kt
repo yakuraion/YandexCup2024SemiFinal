@@ -12,7 +12,7 @@ import kotlinx.coroutines.delay
 import pro.yakuraion.myapplication.R
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.DrawingContentScaffold
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
-import pro.yakuraion.myapplication.presentation.ui.components.MyIconButton
+import pro.yakuraion.myapplication.presentation.components.MyIconButton
 
 @Composable
 fun DrawingPreviewContent(

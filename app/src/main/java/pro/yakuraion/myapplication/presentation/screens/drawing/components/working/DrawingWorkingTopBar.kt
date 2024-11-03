@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.myapplication.R
-import pro.yakuraion.myapplication.presentation.ui.components.MyIconButton
+import pro.yakuraion.myapplication.presentation.components.MyIconButton
 
 @Composable
 fun DrawingWorkingTopBar(
