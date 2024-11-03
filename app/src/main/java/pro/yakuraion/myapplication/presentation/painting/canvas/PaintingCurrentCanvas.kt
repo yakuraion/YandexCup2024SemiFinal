@@ -29,16 +29,6 @@ fun PaintingCurrentCanvas(
     Canvas(
         modifier = modifier
             .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
-            .moveShapeInteractor(
-                active = false,
-                frame = frame,
-                isAcquired = isActiveObjectAcquired,
-                onAcquireRequest = { isActiveObjectAcquired = true },
-                onFinishAction = { action ->
-                    isActiveObjectAcquired = false
-                    onNewAction(action)
-                },
-            )
             .penDrawInteractor(
                 frame = frame,
                 drawingInput = drawingInput,
@@ -54,6 +44,16 @@ fun PaintingCurrentCanvas(
                 drawingInput = drawingInput,
                 onFinishAction = onNewAction,
             )
+            .moveShapeInteractor(
+                frame = frame,
+                drawingInput = drawingInput,
+                isAcquired = isActiveObjectAcquired,
+                onAcquireRequest = { isActiveObjectAcquired = true },
+                onFinishAction = { action ->
+                    isActiveObjectAcquired = false
+                    onNewAction(action)
+                },
+            ),
     ) {
         drawImage(frame.toStaticFrame(withActiveObject = !isActiveObjectAcquired).bitmap)
     }

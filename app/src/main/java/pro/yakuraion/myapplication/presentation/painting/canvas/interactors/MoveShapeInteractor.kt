@@ -15,25 +15,26 @@ import pro.yakuraion.myapplication.presentation.painting.models.ActiveFrame
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
 import pro.yakuraion.myapplication.presentation.painting.models.objects.FrameObjectAttributes
 import pro.yakuraion.myapplication.presentation.painting.utils.DrawingCalculationsUtils
+import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingInput
 
 @Composable
 fun Modifier.moveShapeInteractor(
-    active: Boolean,
     frame: ActiveFrame,
+    drawingInput: DrawingInput,
     isAcquired: Boolean,
     onAcquireRequest: () -> Unit,
     onFinishAction: (action: FrameAction) -> Unit,
 ): Modifier {
-    if (!active) return this
+    if (drawingInput !is DrawingInput.Shape) return this
 
     val activeObject = frame.activeObject ?: return this
 
     var activeObjectAttrs by remember(frame) { mutableStateOf(activeObject.getAttributes()) }
 
-    if (activeObjectAttrs.positionAttributes == null || activeObjectAttrs.colorAttributes == null) return this
+    if (activeObjectAttrs.positionAttributes == null) return this
 
     return this
-        .pointerInput(frame) {
+        .pointerInput(frame, drawingInput) {
             awaitPointerEventScope {
                 while (true) {
                     val downEventChange = awaitFirstDown()
@@ -55,7 +56,8 @@ fun Modifier.moveShapeInteractor(
                                 newCenterOffset += delta
                                 activeObjectAttrs += FrameObjectAttributes.PositionAttributes(
                                     centerOffset = newCenterOffset,
-                                    size = activeObjectAttrs.positionAttributes!!.size
+                                    size = activeObjectAttrs.positionAttributes!!.size,
+                                    radius = activeObjectAttrs.positionAttributes!!.radius,
                                 )
                             }
                     } while (drag != null)
