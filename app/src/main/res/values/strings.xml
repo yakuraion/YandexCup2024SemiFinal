@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">YaCup24_yakuraion</string>
     <string name="working_delete_frames_last_option">Последний</string>
     <string name="working_delete_frames_all_option">Все</string>
     <string name="working_add_new_frame_empty_option">Пустой</string>
