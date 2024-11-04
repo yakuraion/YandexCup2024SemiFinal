@@ -1,5 +1,6 @@
 package pro.yakuraion.myapplication.presentation.screens.drawing.components.framesoverview
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -51,6 +52,8 @@ fun DrawingFramesOverviewContent(
     onGoToFrameClick: (index: Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    BackHandler { onBackClick() }
+
     var isBottomMenuVisible by remember { mutableStateOf(true) }
     var activeFrameIndex by remember(state.selectedFrameIndex) { mutableStateOf(state.selectedFrameIndex) }
 

@@ -1,5 +1,6 @@
 package pro.yakuraion.myapplication.presentation.screens.drawing.components.addframesrange
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -37,6 +38,8 @@ fun DrawingAddFramesRangeContent(
     onSuccess: (obj: PenObject, framesNumber: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    BackHandler { onBackClick() }
+
     var penObject by remember { mutableStateOf<PenObject?>(null) }
     var showFrameNumberDialog by remember { mutableStateOf(false) }
 

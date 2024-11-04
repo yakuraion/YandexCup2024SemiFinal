@@ -1,5 +1,6 @@
 package pro.yakuraion.myapplication.presentation.screens.drawing.components.preview
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,8 @@ fun DrawingPreviewContent(
     onStopClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    BackHandler { onStopClick() }
+
     DrawingContentScaffold(
         topBar = {
             TopBar(
