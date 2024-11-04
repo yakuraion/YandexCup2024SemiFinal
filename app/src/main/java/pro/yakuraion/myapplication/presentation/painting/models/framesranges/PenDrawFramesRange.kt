@@ -45,7 +45,7 @@ data class PenDrawFramesRange(
         } else {
             PenDrawFramesRange(
                 size = size,
-                penObject = getCutPenObject(penObject, numberOfFrames - 2, numberOfFrames - 1),
+                penObject = getCutPenObject(penObject, numberOfFrames - 2, numberOfFrames),
                 numberOfFrames = numberOfFrames - 1,
             )
         }
