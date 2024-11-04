@@ -10,7 +10,9 @@ import pro.yakuraion.myapplication.core.combineStates
 import pro.yakuraion.myapplication.core.mapState
 import pro.yakuraion.myapplication.presentation.painting.models.Document
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
+import pro.yakuraion.myapplication.presentation.painting.models.framesranges.PenDrawFramesRange
 import pro.yakuraion.myapplication.presentation.painting.models.framesranges.SingleFramesRange
+import pro.yakuraion.myapplication.presentation.painting.models.objects.PenObject
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingInput
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
 
@@ -72,6 +74,15 @@ class DrawingViewModel : ViewModel() {
         document.addNewFramesRanges(framesRange)
     }
 
+    fun onWorkingAddNewFramesRangeClick() {
+        _state.update {
+            DrawingScreenState.AddFramesRange(
+                size = canvasSize,
+                penDrawingInput = DrawingInput.Pen(strokeWidth.value, color.value)
+            )
+        }
+    }
+
     fun onWorkingShowFramesClick() {
 
     }
@@ -110,6 +121,20 @@ class DrawingViewModel : ViewModel() {
 
     fun onWorkingColorsMenuColorClick(color: Color) {
         this.color.update { color }
+    }
+
+    fun onAddFramesRangeBackClick() {
+        _state.update { workingState }
+    }
+
+    fun onAddFramesRangeSuccess(obj: PenObject, framesNumber: Int) {
+        val newFramesRange = PenDrawFramesRange(
+            size = canvasSize,
+            penObject = obj,
+            numberOfFrames = framesNumber,
+        )
+        document.addNewFramesRanges(newFramesRange)
+        _state.update { workingState }
     }
 
     fun onPreviewNewFrameRequest(oldIndex: Long) {

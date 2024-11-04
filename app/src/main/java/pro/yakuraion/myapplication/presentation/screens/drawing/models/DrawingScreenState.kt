@@ -1,5 +1,6 @@
 package pro.yakuraion.myapplication.presentation.screens.drawing.models
 
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.flow.StateFlow
 import pro.yakuraion.myapplication.presentation.painting.models.ActiveFrame
@@ -16,6 +17,11 @@ sealed class DrawingScreenState {
         val drawingInput: StateFlow<DrawingInput>,
         val lastStrokeWidth: StateFlow<Float>,
         val lastColor: StateFlow<Color>,
+    ) : DrawingScreenState()
+
+    data class AddFramesRange(
+        val size: Size,
+        val penDrawingInput: DrawingInput.Pen,
     ) : DrawingScreenState()
 
     data class Preview(

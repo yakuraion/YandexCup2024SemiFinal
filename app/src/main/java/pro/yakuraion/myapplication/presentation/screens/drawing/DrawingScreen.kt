@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.androidx.compose.koinViewModel
 import pro.yakuraion.myapplication.presentation.painting.models.ActiveFrame
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
+import pro.yakuraion.myapplication.presentation.painting.models.objects.PenObject
+import pro.yakuraion.myapplication.presentation.screens.drawing.components.addframesrange.DrawingAddFramesRangeContent
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.preview.DrawingPreviewContent
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.DrawingWorkingContent
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingInput
@@ -26,6 +28,7 @@ fun DrawingScreen(
         onWorkingGoForwardClick = viewModel::onWorkingGoForwardClick,
         onWorkingDeleteFrameClick = viewModel::onWorkingDeleteFrameClick,
         onWorkingAddNewFrameClick = viewModel::onWorkingAddNewFrameClick,
+        onWorkingAddNewFramesRangeClick = viewModel::onWorkingAddNewFramesRangeClick,
         onWorkingShowFramesClick = viewModel::onWorkingShowFramesClick,
         onWorkingStartPreviewClick = viewModel::onWorkingStartPreviewClick,
         onWorkingNewAction = viewModel::onWorkingNewAction,
@@ -36,6 +39,8 @@ fun DrawingScreen(
         onWorkingInstrumentsMenuCircleClick = viewModel::onWorkingInstrumentsMenuCircleClick,
         onWorkingLineWeightMenuStrokeWidthChanged = viewModel::onWorkingLineWeightMenuStrokeWidthChanged,
         onWorkingColorsMenuColorClick = viewModel::onWorkingColorsMenuColorClick,
+        onAddFramesRangeBackClick = viewModel::onAddFramesRangeBackClick,
+        onAddFramesRangeSuccess = viewModel::onAddFramesRangeSuccess,
         onPreviewNewFrameRequest = viewModel::onPreviewNewFrameRequest,
         onPreviewStopClick = viewModel::onPreviewStopClick,
     )
@@ -48,6 +53,7 @@ private fun DrawingScreen(
     onWorkingGoForwardClick: () -> Unit,
     onWorkingDeleteFrameClick: () -> Unit,
     onWorkingAddNewFrameClick: () -> Unit,
+    onWorkingAddNewFramesRangeClick: () -> Unit,
     onWorkingShowFramesClick: () -> Unit,
     onWorkingStartPreviewClick: () -> Unit,
     onWorkingNewAction: (action: FrameAction) -> Unit,
@@ -58,6 +64,8 @@ private fun DrawingScreen(
     onWorkingInstrumentsMenuCircleClick: () -> Unit,
     onWorkingLineWeightMenuStrokeWidthChanged: (Float) -> Unit,
     onWorkingColorsMenuColorClick: (Color) -> Unit,
+    onAddFramesRangeBackClick: () -> Unit,
+    onAddFramesRangeSuccess: (obj: PenObject, framesNumber: Int) -> Unit,
     onPreviewNewFrameRequest: (oldIndex: Long) -> Unit,
     onPreviewStopClick: () -> Unit,
 ) {
@@ -69,6 +77,7 @@ private fun DrawingScreen(
                 onGoForwardClick = onWorkingGoForwardClick,
                 onDeleteFrameClick = onWorkingDeleteFrameClick,
                 onAddNewFrameClick = onWorkingAddNewFrameClick,
+                onAddNewFramesRangeClick = onWorkingAddNewFramesRangeClick,
                 onShowFramesClick = onWorkingShowFramesClick,
                 onStartPreviewClick = onWorkingStartPreviewClick,
                 onNewAction = onWorkingNewAction,
@@ -79,6 +88,14 @@ private fun DrawingScreen(
                 onInstrumentsMenuCircleClick = onWorkingInstrumentsMenuCircleClick,
                 onLineWeightMenuStrokeWidthChanged = onWorkingLineWeightMenuStrokeWidthChanged,
                 onColorsMenuColorClick = onWorkingColorsMenuColorClick,
+            )
+        }
+
+        is DrawingScreenState.AddFramesRange -> {
+            DrawingAddFramesRangeContent(
+                state = state,
+                onBackClick = onAddFramesRangeBackClick,
+                onSuccess = onAddFramesRangeSuccess,
             )
         }
 
@@ -111,6 +128,7 @@ private fun Preview() {
             onWorkingGoForwardClick = {},
             onWorkingDeleteFrameClick = {},
             onWorkingAddNewFrameClick = {},
+            onWorkingAddNewFramesRangeClick = {},
             onWorkingShowFramesClick = {},
             onWorkingStartPreviewClick = {},
             onWorkingNewAction = {},
@@ -121,6 +139,8 @@ private fun Preview() {
             onWorkingInstrumentsMenuCircleClick = {},
             onWorkingLineWeightMenuStrokeWidthChanged = {},
             onWorkingColorsMenuColorClick = {},
+            onAddFramesRangeBackClick = {},
+            onAddFramesRangeSuccess = { _, _ -> },
             onPreviewNewFrameRequest = {},
             onPreviewStopClick = {},
         )

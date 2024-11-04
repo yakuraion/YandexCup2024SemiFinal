@@ -23,6 +23,7 @@ fun DrawingWorkingTopBar(
     onGoForwardClick: () -> Unit,
     onDeleteFrameClick: () -> Unit,
     onAddNewFrameClick: () -> Unit,
+    onAddNewFramesRangeClick: () -> Unit,
     onShowFramesClick: () -> Unit,
     onStartPreviewClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -46,6 +47,7 @@ fun DrawingWorkingTopBar(
                 canDeleteFrame = canDeleteFrame,
                 onDeleteFrameClick = onDeleteFrameClick,
                 onAddNewFrameClick = onAddNewFrameClick,
+                onAddNewFramesRangeClick = onAddNewFramesRangeClick,
                 onShowFramesClick = onShowFramesClick,
             )
         }
@@ -88,6 +90,7 @@ private fun FrameActionsRow(
     canDeleteFrame: Boolean,
     onDeleteFrameClick: () -> Unit,
     onAddNewFrameClick: () -> Unit,
+    onAddNewFramesRangeClick: () -> Unit,
     onShowFramesClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -104,6 +107,14 @@ private fun FrameActionsRow(
         MyIconButton(
             painter = painterResource(R.drawable.ic_new_frame_32),
             onClick = onAddNewFrameClick,
+            modifier = Modifier.size(40.dp),
+        )
+
+        Spacer(Modifier.width(8.dp))
+
+        MyIconButton(
+            painter = painterResource(R.drawable.ic_add_frames_range_32),
+            onClick = onAddNewFramesRangeClick,
             modifier = Modifier.size(40.dp),
         )
 

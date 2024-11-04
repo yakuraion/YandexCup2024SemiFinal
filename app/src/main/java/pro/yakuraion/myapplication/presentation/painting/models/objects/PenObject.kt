@@ -27,7 +27,7 @@ data class PenObject(private val attributes: FrameObjectAttributes) : FrameObjec
             }
 
             else -> {
-                for (i in 0 until pathAttributes.path.lastIndex - 1) {
+                for (i in 0..<pathAttributes.path.lastIndex) {
                     drawLine(
                         color = colorAttributes.color,
                         start = pathAttributes.path[i],

@@ -29,7 +29,7 @@ data class EraserObject(private val attributes: FrameObjectAttributes) : FrameOb
             }
 
             else -> {
-                for (i in 0 until pathAttributes.path.lastIndex - 1) {
+                for (i in 0..<pathAttributes.path.lastIndex) {
                     drawLine(
                         color = Color.Black,
                         start = pathAttributes.path[i],

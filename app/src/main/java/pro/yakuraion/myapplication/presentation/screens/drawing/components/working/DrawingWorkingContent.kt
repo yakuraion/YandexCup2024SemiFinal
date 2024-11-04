@@ -24,6 +24,7 @@ fun DrawingWorkingContent(
     onGoForwardClick: () -> Unit,
     onDeleteFrameClick: () -> Unit,
     onAddNewFrameClick: () -> Unit,
+    onAddNewFramesRangeClick: () -> Unit,
     onShowFramesClick: () -> Unit,
     onStartPreviewClick: () -> Unit,
     onNewAction: (action: FrameAction) -> Unit,
@@ -50,6 +51,7 @@ fun DrawingWorkingContent(
                 onGoForwardClick = onGoForwardClick,
                 onDeleteFrameClick = onDeleteFrameClick,
                 onAddNewFrameClick = onAddNewFrameClick,
+                onAddNewFramesRangeClick = onAddNewFramesRangeClick,
                 onShowFramesClick = onShowFramesClick,
                 onStartPreviewClick = onStartPreviewClick,
             )
