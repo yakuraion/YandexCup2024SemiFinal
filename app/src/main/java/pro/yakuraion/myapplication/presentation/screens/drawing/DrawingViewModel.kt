@@ -66,11 +66,6 @@ class DrawingViewModel(private val canvasSize: Size) : ViewModel() {
         document.deleteLastFrame()
     }
 
-    fun onWorkingAddNewFrameClick() {
-        val framesRange = SingleFramesRange(canvasSize)
-        document.addNewFramesRanges(framesRange)
-    }
-
     fun onWorkingAddNewFramesRangeClick() {
         _state.update {
             DrawingScreenState.AddFramesRange(
@@ -105,6 +100,19 @@ class DrawingViewModel(private val canvasSize: Size) : ViewModel() {
 
     fun onWorkingEraserClick() {
         drawingInputType.update { DrawingInputType.ERASER }
+    }
+
+    fun onWorkingAddNewFrameMenuEmptyClick() {
+        val framesRange = SingleFramesRange(canvasSize)
+        document.addNewFramesRanges(framesRange)
+    }
+
+    fun onWorkingAddNewFrameMenuDuplicateClick() {
+        val framesRange = SingleFramesRange(
+            size = canvasSize,
+            activeFrame = workingState.activeFrame.value
+        )
+        document.addNewFramesRanges(framesRange)
     }
 
     fun onWorkingInstrumentsMenuSquareClick() {

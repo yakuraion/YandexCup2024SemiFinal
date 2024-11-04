@@ -23,11 +23,12 @@ import pro.yakuraion.myapplication.R
 
 @Composable
 fun DrawingContentScaffold(
-    topBar: @Composable () -> Unit,
     canvas: @Composable () -> Unit,
-    bottomBar: @Composable () -> Unit,
-    bottomBarMenu: @Composable () -> Unit,
     modifier: Modifier = Modifier,
+    topBar: @Composable () -> Unit = {},
+    bottomBar: @Composable () -> Unit = {},
+    topBarMenu: @Composable () -> Unit = {},
+    bottomBarMenu: @Composable () -> Unit = {},
 ) {
     Box(
         modifier = modifier
@@ -77,6 +78,14 @@ fun DrawingContentScaffold(
             ) {
                 bottomBar()
             }
+        }
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 84.dp)
+        ) {
+            topBarMenu()
         }
 
         Box(

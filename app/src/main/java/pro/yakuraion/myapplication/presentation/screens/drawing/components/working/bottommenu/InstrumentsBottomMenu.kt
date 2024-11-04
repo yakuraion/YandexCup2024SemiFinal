@@ -10,6 +10,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.myapplication.R
 import pro.yakuraion.myapplication.presentation.components.MyIconButton
+import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.TopBottomMenu
 
 @Composable
 fun InstrumentsBottomMenu(
@@ -21,7 +22,7 @@ fun InstrumentsBottomMenu(
     onCircleClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BottomMenu(
+    TopBottomMenu(
         modifier = modifier
             .height(56.dp),
     ) {

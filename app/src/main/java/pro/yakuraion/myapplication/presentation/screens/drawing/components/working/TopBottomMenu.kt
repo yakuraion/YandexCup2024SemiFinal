@@ -1,4 +1,4 @@
-package pro.yakuraion.myapplication.presentation.screens.drawing.components.working.bottommenu
+package pro.yakuraion.myapplication.presentation.screens.drawing.components.working
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BottomMenu(
+fun TopBottomMenu(
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit,
 ) {

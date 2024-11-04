@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.TopBottomMenu
 
 private const val MIN_LINE_WEIGHT = 10f
 private const val MAX_LINE_WEIGHT = 100f
@@ -26,7 +27,7 @@ fun LineWeightBottomMenu(
     onLineWeightChanged: (Float) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BottomMenu(
+    TopBottomMenu(
         modifier = modifier
             .height(56.dp)
             .padding(horizontal = 32.dp),

@@ -40,7 +40,7 @@ import pro.yakuraion.myapplication.core.applyIf
 import pro.yakuraion.myapplication.presentation.components.AskNumberDialog
 import pro.yakuraion.myapplication.presentation.components.MyIconButton
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.DrawingContentScaffold
-import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.bottommenu.BottomMenu
+import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.TopBottomMenu
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
 import kotlin.math.max
 import kotlin.math.min
@@ -155,7 +155,7 @@ private fun FramesBottomMenu(
     onFrameClick: (frameIndex: Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BottomMenu(
+    TopBottomMenu(
         modifier = modifier
             .height(120.dp)
             .padding(horizontal = 12.dp),

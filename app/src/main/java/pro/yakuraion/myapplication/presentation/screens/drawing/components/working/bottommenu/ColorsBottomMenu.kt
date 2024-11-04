@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.myapplication.presentation.components.ColorButton
+import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.TopBottomMenu
 
 private val COLORS = listOf(
     Color.White,
@@ -22,7 +23,7 @@ fun ColorsBottomMenu(
     onColorClick: (Color) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BottomMenu(
+    TopBottomMenu(
         modifier = modifier
             .height(56.dp),
     ) {

@@ -14,6 +14,7 @@ import pro.yakuraion.myapplication.presentation.screens.drawing.components.Drawi
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.bottommenu.ColorsBottomMenu
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.bottommenu.InstrumentsBottomMenu
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.bottommenu.LineWeightBottomMenu
+import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.topmenu.AddNewFrameTopMenu
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingInput
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
 
@@ -23,13 +24,14 @@ fun DrawingWorkingContent(
     onGoBackClick: () -> Unit,
     onGoForwardClick: () -> Unit,
     onDeleteFrameClick: () -> Unit,
-    onAddNewFrameClick: () -> Unit,
     onAddNewFramesRangeClick: () -> Unit,
     onShowFramesClick: () -> Unit,
     onStartPreviewClick: () -> Unit,
     onNewAction: (action: FrameAction) -> Unit,
     onPenClick: () -> Unit,
     onEraserClick: () -> Unit,
+    onAddNewFrameMenuEmptyClick: () -> Unit,
+    onAddNewFrameMenuDuplicateClick: () -> Unit,
     onInstrumentsMenuSquareClick: () -> Unit,
     onInstrumentsMenuTriangleClick: () -> Unit,
     onInstrumentsMenuCircleClick: () -> Unit,
@@ -37,6 +39,8 @@ fun DrawingWorkingContent(
     onColorsMenuColorClick: (Color) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var isAddNewFrameTopMenuVisible by remember { mutableStateOf(false) }
+
     var isInstrumentsBottomMenuVisible by remember { mutableStateOf(false) }
     var isLineWeightBottomMenuVisible by remember { mutableStateOf(false) }
     var isColorsBottomMenuVisible by remember { mutableStateOf(false) }
@@ -50,11 +54,25 @@ fun DrawingWorkingContent(
                 onGoBackClick = onGoBackClick,
                 onGoForwardClick = onGoForwardClick,
                 onDeleteFrameClick = onDeleteFrameClick,
-                onAddNewFrameClick = onAddNewFrameClick,
+                onAddNewFrameClick = { isAddNewFrameTopMenuVisible = !isAddNewFrameTopMenuVisible },
                 onAddNewFramesRangeClick = onAddNewFramesRangeClick,
                 onShowFramesClick = onShowFramesClick,
                 onStartPreviewClick = onStartPreviewClick,
             )
+        },
+        topBarMenu = {
+            if (isAddNewFrameTopMenuVisible) {
+                AddNewFrameTopMenu(
+                    onEmptyFrameClick = {
+                        onAddNewFrameMenuEmptyClick()
+                        isAddNewFrameTopMenuVisible = false
+                    },
+                    onDuplicateFrameClick = {
+                        onAddNewFrameMenuDuplicateClick()
+                        isAddNewFrameTopMenuVisible = false
+                    },
+                )
+            }
         },
         canvas = {
             PaintingCanvas(
