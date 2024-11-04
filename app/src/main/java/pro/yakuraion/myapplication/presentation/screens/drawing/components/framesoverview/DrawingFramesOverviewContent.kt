@@ -249,12 +249,13 @@ private fun AskFrameIndexDialog(
         onNumberTrySelect = { number ->
             try {
                 val numberLong = number.toLong()
-                if (numberLong in 1..(maxFrameIndex + 1)) {
-                    onIndexSelected(numberLong - 1)
-                    true
-                } else {
-                    false
+                val index = when {
+                    numberLong < 1 -> 0L
+                    numberLong > maxFrameIndex -> maxFrameIndex
+                    else -> numberLong
                 }
+                onIndexSelected(index)
+                true
             } catch (e: Exception) {
                 false
             }
