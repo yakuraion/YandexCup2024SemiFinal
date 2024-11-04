@@ -12,6 +12,7 @@ import pro.yakuraion.myapplication.presentation.painting.models.ActiveFrame
 import pro.yakuraion.myapplication.presentation.painting.models.FrameAction
 import pro.yakuraion.myapplication.presentation.painting.models.objects.PenObject
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.addframesrange.DrawingAddFramesRangeContent
+import pro.yakuraion.myapplication.presentation.screens.drawing.components.framesoverview.DrawingFramesOverviewContent
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.preview.DrawingPreviewContent
 import pro.yakuraion.myapplication.presentation.screens.drawing.components.working.DrawingWorkingContent
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingInput
@@ -41,6 +42,8 @@ fun DrawingScreen(
         onWorkingColorsMenuColorClick = viewModel::onWorkingColorsMenuColorClick,
         onAddFramesRangeBackClick = viewModel::onAddFramesRangeBackClick,
         onAddFramesRangeSuccess = viewModel::onAddFramesRangeSuccess,
+        onFramesOverviewBackClick = viewModel::onFramesOverviewBackClick,
+        onFramesOverviewGoToFrameClick = viewModel::onFramesOverviewGoToFrameClick,
         onPreviewNewFrameRequest = viewModel::onPreviewNewFrameRequest,
         onPreviewStopClick = viewModel::onPreviewStopClick,
     )
@@ -66,6 +69,8 @@ private fun DrawingScreen(
     onWorkingColorsMenuColorClick: (Color) -> Unit,
     onAddFramesRangeBackClick: () -> Unit,
     onAddFramesRangeSuccess: (obj: PenObject, framesNumber: Int) -> Unit,
+    onFramesOverviewBackClick: () -> Unit,
+    onFramesOverviewGoToFrameClick: (index: Long) -> Unit,
     onPreviewNewFrameRequest: (oldIndex: Long) -> Unit,
     onPreviewStopClick: () -> Unit,
 ) {
@@ -96,6 +101,14 @@ private fun DrawingScreen(
                 state = state,
                 onBackClick = onAddFramesRangeBackClick,
                 onSuccess = onAddFramesRangeSuccess,
+            )
+        }
+
+        is DrawingScreenState.FramesOverview -> {
+            DrawingFramesOverviewContent(
+                state = state,
+                onBackClick = onFramesOverviewBackClick,
+                onGoToFrameClick = onFramesOverviewGoToFrameClick,
             )
         }
 
@@ -141,6 +154,8 @@ private fun Preview() {
             onWorkingColorsMenuColorClick = {},
             onAddFramesRangeBackClick = {},
             onAddFramesRangeSuccess = { _, _ -> },
+            onFramesOverviewBackClick = {},
+            onFramesOverviewGoToFrameClick = {},
             onPreviewNewFrameRequest = {},
             onPreviewStopClick = {},
         )

@@ -84,7 +84,14 @@ class DrawingViewModel : ViewModel() {
     }
 
     fun onWorkingShowFramesClick() {
-
+        _state.update {
+            DrawingScreenState.FramesOverview(
+                originalFrameSize = canvasSize,
+                selectedFrameIndex = document.getFramesCount() - 1,
+                lastFrameIndex = document.getFramesCount() - 1,
+                getFramePreviewAction = { index -> document.getStaticFrame(index).bitmap },
+            )
+        }
     }
 
     fun onWorkingStartPreviewClick() {
@@ -137,8 +144,23 @@ class DrawingViewModel : ViewModel() {
         _state.update { workingState }
     }
 
+    fun onFramesOverviewBackClick() {
+        _state.update { workingState }
+    }
+
+    fun onFramesOverviewGoToFrameClick(frameIndex: Long) {
+        _state.update {
+            DrawingScreenState.FramesOverview(
+                originalFrameSize = canvasSize,
+                selectedFrameIndex = frameIndex,
+                lastFrameIndex = document.getFramesCount() - 1,
+                getFramePreviewAction = { index -> document.getStaticFrame(index).bitmap },
+            )
+        }
+    }
+
     fun onPreviewNewFrameRequest(oldIndex: Long) {
-        if (oldIndex < document.getStaticFramesCount() - 1) {
+        if (oldIndex < document.getFramesCount() - 1) {
             setPreviewFrame(oldIndex + 1)
         } else {
             setPreviewFrame(0)

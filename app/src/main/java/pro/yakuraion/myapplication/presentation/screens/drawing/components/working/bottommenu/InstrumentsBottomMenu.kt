@@ -1,7 +1,7 @@
 package pro.yakuraion.myapplication.presentation.screens.drawing.components.working.bottommenu
 
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -23,7 +23,7 @@ fun InstrumentsBottomMenu(
 ) {
     BottomMenu(
         modifier = modifier
-            .padding(horizontal = 12.dp),
+            .height(56.dp),
     ) {
         MyIconButton(
             painter = painterResource(R.drawable.ic_square_24),

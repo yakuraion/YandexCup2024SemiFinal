@@ -3,4 +3,6 @@
     <string name="add_frames_range_hint">Проведите, не открывая пальца</string>
     <string name="add_frames_number_dialog_title">Введите количество кадров (≤ 2147483647)</string>
     <string name="add_frames_number_dialog_ok">Подтвердить</string>
+    <string name="frames_overview_go_to">Перейти\nк кадру</string>
+    <string name="frames_overview_frame_index_dialog_title">Введите номер кадра</string>
 </resources>

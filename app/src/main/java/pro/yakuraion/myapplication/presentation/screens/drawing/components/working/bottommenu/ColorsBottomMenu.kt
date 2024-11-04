@@ -1,7 +1,7 @@
 package pro.yakuraion.myapplication.presentation.screens.drawing.components.working.bottommenu
 
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,7 +24,7 @@ fun ColorsBottomMenu(
 ) {
     BottomMenu(
         modifier = modifier
-            .padding(horizontal = 12.dp),
+            .height(56.dp),
     ) {
         COLORS.forEachIndexed { index, color ->
             if (index != 0) {

@@ -26,7 +26,7 @@ class Document(size: Size) {
         }
     }
 
-    fun getStaticFramesCount(): Long {
+    fun getFramesCount(): Long {
         return framesRanges.value.sumOf { it.frameCount }
     }
 
