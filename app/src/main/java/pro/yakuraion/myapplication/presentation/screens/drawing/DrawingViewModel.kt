@@ -16,10 +16,7 @@ import pro.yakuraion.myapplication.presentation.painting.models.objects.PenObjec
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingInput
 import pro.yakuraion.myapplication.presentation.screens.drawing.models.DrawingScreenState
 
-class DrawingViewModel : ViewModel() {
-
-    // todo
-    private val canvasSize: Size = Size(1080.0f, 2274.0f)
+class DrawingViewModel(private val canvasSize: Size) : ViewModel() {
 
     private val document: Document = Document(canvasSize)
 
