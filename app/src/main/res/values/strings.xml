@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="working_delete_frames_last_option">Последний</string>
+    <string name="working_delete_frames_all_option">Все</string>
     <string name="working_add_new_frame_empty_option">Пустой</string>
     <string name="working_add_new_frame_duplicate_option">Дубликат</string>
     <string name="add_frames_range_hint">Проведите, не открывая пальца</string>

@@ -8,7 +8,7 @@ import pro.yakuraion.myapplication.core.mapState
 import pro.yakuraion.myapplication.presentation.painting.models.framesranges.FramesRange
 import pro.yakuraion.myapplication.presentation.painting.models.framesranges.SingleFramesRange
 
-class Document(size: Size) {
+class Document(private val size: Size) {
 
     private val framesRanges: MutableStateFlow<List<FramesRange>> = MutableStateFlow(
         listOf(SingleFramesRange(size))
@@ -78,6 +78,10 @@ class Document(size: Size) {
                 framesRanges.dropLast(1)
             }
         }
+    }
+
+    fun deleteAllFrames() {
+        framesRanges.update { listOf(SingleFramesRange(size)) }
     }
 
     private fun updateLastFrameRange(action: (FramesRange) -> FramesRange) {
